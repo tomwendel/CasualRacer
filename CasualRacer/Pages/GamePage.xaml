@@ -1,14 +1,16 @@
-﻿<Page x:Class="CasualRacer.Pages.GamePage"
+﻿<Page
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CasualRacer.Pages"
+      xmlns:CasualRacer="clr-namespace:CasualRacer" x:Class="CasualRacer.Pages.GamePage"
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="GamePage">
 
     <Grid Background="DarkRed">
         <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click" />
+        <CasualRacer:GameControl  Margin="20,30,20,20" />
     </Grid>
 </Page>
