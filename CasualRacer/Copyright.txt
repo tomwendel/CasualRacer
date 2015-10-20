@@ -1,0 +1,5 @@
+﻿Alle verwendeten Assets stammen aus folgenden Quellen:
+
+- Aline (http://www.alineimwunderland.de/) hat Logo und UI-Hintergründe gemacht
+- BAHI (http://opengameart.org/users/bahi) lieferte die Auto-Modelle
+- TRBRY (http://opengameart.org/users/trbry) brachte Fahrbahn-Texturen ins Rennen

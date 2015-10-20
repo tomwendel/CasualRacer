@@ -8,7 +8,7 @@
       d:DesignHeight="300" d:DesignWidth="300"
       Title="OptionPage">
 
-    <Grid Background="Bisque">
+    <Grid>
         <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click" />
 
     </Grid>

@@ -24,19 +24,24 @@ namespace CasualRacer.Pages
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void GameButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new GamePage());
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void OptionsButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new OptionPage());
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.MainWindow.Close();
+        }
+
+        private void CreditsButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new CreditsPage());
         }
     }
 }

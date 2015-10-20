@@ -9,8 +9,8 @@
       d:DesignHeight="300" d:DesignWidth="300"
       Title="GamePage">
 
-    <Grid Background="DarkRed">
+    <Grid>
         <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click" />
-        <CasualRacer:GameControl  Margin="20,30,20,20" />
+        <CasualRacer:GameControl  Margin="20 50 20 20" />
     </Grid>
 </Page>

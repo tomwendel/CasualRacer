@@ -5,8 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CasualRacer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280" ResizeMode="NoResize">
-    <Grid Background="DarkCyan">
-        <Frame x:Name="NavigationFrame" NavigationUIVisibility="Hidden" />
+        Title="Casual Racer" Height="720" Width="1280" ResizeMode="NoResize">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="Assets/Background.png" Stretch="UniformToFill"/>
+        </Grid.Background>
+        <Frame x:Name="NavigationFrame" NavigationUIVisibility="Hidden" Navigating="NavigationFrame_Navigating" />
     </Grid>
 </Window>
