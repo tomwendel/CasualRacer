@@ -34,7 +34,7 @@ namespace CasualRacer.Model
                 if (position != value)
                 {
                     position = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Direction)));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Position)));
                 }
             }
         }
