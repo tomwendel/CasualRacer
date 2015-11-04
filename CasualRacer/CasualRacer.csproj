@@ -92,6 +92,7 @@
   <ItemGroup>
     <Compile Include="Model\Game.cs" />
     <Compile Include="Model\Player.cs" />
+    <Compile Include="Model\Track.cs" />
     <Compile Include="Pages\CreditsPage.xaml.cs">
       <DependentUpon>CreditsPage.xaml</DependentUpon>
     </Compile>

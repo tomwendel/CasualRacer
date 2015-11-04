@@ -6,8 +6,8 @@
              xmlns:local="clr-namespace:CasualRacer"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Background="DarkGray">
-        <Border Width="20" Height="20" Background="Red" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+    <Canvas>
+        <Border Width="20" Height="20" Canvas.Left="-10" Canvas.Top="-10" Background="Red" RenderTransformOrigin="0.5,0.5">
             <Border.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="{Binding Path=Player1.Direction}" />
@@ -15,5 +15,5 @@
                 </TransformGroup>
             </Border.RenderTransform>
         </Border>
-    </Grid>
+    </Canvas>
 </UserControl>

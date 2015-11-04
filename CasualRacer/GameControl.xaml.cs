@@ -44,6 +44,40 @@ namespace CasualRacer
             Application.Current.MainWindow.KeyUp += MainWindow_KeyUp;
         }
 
+        protected override void OnRender(DrawingContext drawingContext)
+        {
+            base.OnRender(drawingContext);
+
+            Track track = (DataContext as Game).Track;
+
+            Brush dirtBrush = new SolidColorBrush(Color.FromArgb(255, 127, 51, 0));
+            Brush sandBrush = new SolidColorBrush(Color.FromArgb(255, 255, 226, 147));
+            Brush grasBrush = new SolidColorBrush(Color.FromArgb(255, 76, 255, 0));
+            Brush roadBrush = new SolidColorBrush(Color.FromArgb(255, 128, 128, 128));
+
+            for (int x = 0; x < track.Tiles.GetLength(0); x++)
+            {
+                for (int y = 0; y < track.Tiles.GetLength(1); y++)
+                {
+                    Brush brush = dirtBrush;
+                    switch(track.Tiles[x,y])
+                    {
+                        case TrackTile.Gras:
+                            brush = grasBrush;
+                            break;
+                        case TrackTile.Road:
+                            brush = roadBrush;
+                            break;
+                        case TrackTile.Sand:
+                            brush = sandBrush;
+                            break;
+                    }
+
+                    drawingContext.DrawRectangle(brush, null, new Rect(x * 40, y * 40, 40, 40));
+                }
+            }
+        }
+
         private void Timer_Tick(object sender, EventArgs e)
         {
             TimeSpan elapsed = elapsedWatch.Elapsed;
