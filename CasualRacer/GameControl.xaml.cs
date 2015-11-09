@@ -105,6 +105,9 @@ namespace CasualRacer
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             CompositionTarget.Rendering -= OnRendering;
+
+            Application.Current.MainWindow.KeyDown -= MainWindow_KeyDown;
+            Application.Current.MainWindow.KeyUp -= MainWindow_KeyUp;
         }
     }
 }
