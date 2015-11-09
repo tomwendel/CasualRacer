@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Threading;
 
 namespace CasualRacer
 {
@@ -22,22 +23,18 @@ namespace CasualRacer
     /// </summary>
     public partial class GameControl : UserControl
     {
-        private Game game = new Game();
+        private readonly Game game = new Game();
 
-        private DispatcherTimer timer = new DispatcherTimer();
-        private Stopwatch totalWatch = new Stopwatch();
-        private Stopwatch elapsedWatch = new Stopwatch();
+        private readonly Stopwatch totalWatch = new Stopwatch();
+        private readonly Stopwatch elapsedWatch = new Stopwatch();
 
         public GameControl()
         {
             InitializeComponent();
             DataContext = game;
 
-            timer.Interval = TimeSpan.FromMilliseconds(40);
-            timer.Tick += Timer_Tick;
-            timer.IsEnabled = true;
+            CompositionTarget.Rendering += OnRendering;
 
-            totalWatch.Start();
             elapsedWatch.Start();
 
             Application.Current.MainWindow.KeyDown += MainWindow_KeyDown;
@@ -60,17 +57,17 @@ namespace CasualRacer
                 for (int y = 0; y < track.Tiles.GetLength(1); y++)
                 {
                     Brush brush = dirtBrush;
-                    switch(track.Tiles[x,y])
+                    switch (track.Tiles[x, y])
                     {
-                        case TrackTile.Gras:
-                            brush = grasBrush;
-                            break;
-                        case TrackTile.Road:
-                            brush = roadBrush;
-                            break;
-                        case TrackTile.Sand:
-                            brush = sandBrush;
-                            break;
+                    case TrackTile.Gras:
+                        brush = grasBrush;
+                        break;
+                    case TrackTile.Road:
+                        brush = roadBrush;
+                        break;
+                    case TrackTile.Sand:
+                        brush = sandBrush;
+                        break;
                     }
 
                     drawingContext.DrawRectangle(brush, null, new Rect(x * 40, y * 40, 40, 40));
@@ -78,7 +75,7 @@ namespace CasualRacer
             }
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
+        private void OnRendering(object sender, EventArgs e)
         {
             TimeSpan elapsed = elapsedWatch.Elapsed;
             elapsedWatch.Restart();
@@ -89,9 +86,9 @@ namespace CasualRacer
         {
             switch (e.Key)
             {
-                case Key.Up: game.Player1.Acceleration = false; break;
-                case Key.Left: game.Player1.WheelLeft = false; break;
-                case Key.Right: game.Player1.WheelRight = false; break;
+            case Key.Up: game.Player1.Acceleration = false; break;
+            case Key.Left: game.Player1.WheelLeft = false; break;
+            case Key.Right: game.Player1.WheelRight = false; break;
             }
         }
 
@@ -99,10 +96,15 @@ namespace CasualRacer
         {
             switch (e.Key)
             {
-                case Key.Up: game.Player1.Acceleration = true; break;
-                case Key.Left: game.Player1.WheelLeft = true; break;
-                case Key.Right: game.Player1.WheelRight = true; break;
+            case Key.Up: game.Player1.Acceleration = true; break;
+            case Key.Left: game.Player1.WheelLeft = true; break;
+            case Key.Right: game.Player1.WheelRight = true; break;
             }
+        }
+
+        private void UserControl_Unloaded(object sender, RoutedEventArgs e)
+        {
+            CompositionTarget.Rendering -= OnRendering;
         }
     }
 }
