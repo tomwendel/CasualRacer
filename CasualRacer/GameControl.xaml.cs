@@ -45,7 +45,7 @@ namespace CasualRacer
         {
             base.OnRender(drawingContext);
 
-            Track track = (DataContext as Game).Track;
+            Track track = game.Track;
 
             Brush dirtBrush = new SolidColorBrush(Color.FromArgb(255, 127, 51, 0));
             Brush sandBrush = new SolidColorBrush(Color.FromArgb(255, 255, 226, 147));
