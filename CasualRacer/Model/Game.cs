@@ -13,10 +13,7 @@ namespace CasualRacer.Model
 
         public Game()
         {
-            Track = new Track(30, 15);
-            Track.Tiles[10, 10] = TrackTile.Road;
-            Track.Tiles[10, 9] = TrackTile.Gras;
-            Track.Tiles[10, 8] = TrackTile.Sand;
+            Track = Track.Load("./Tracks/Track1.txt");
 
             Player1 = new Player();
 
@@ -24,7 +21,14 @@ namespace CasualRacer.Model
 
         public void Update(TimeSpan totalTime, TimeSpan elapsedTime)
         {
-            Player1.Update(totalTime, elapsedTime);
+            // Lenkung
+            if (Player1.WheelLeft)
+                Player1.Direction -= (float)elapsedTime.TotalSeconds * 100;
+            if (Player1.WheelRight)
+                Player1.Direction += (float)elapsedTime.TotalSeconds * 100;
+
+            // Beschleunigung & Bremse
+
         }
     }
 }
