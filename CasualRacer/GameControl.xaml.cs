@@ -73,7 +73,7 @@ namespace CasualRacer
                             break;
                     }
 
-                    drawingContext.DrawRectangle(brush, null, new Rect(x * 40, y * 40, 40, 40));
+                    drawingContext.DrawRectangle(brush, null, new Rect(x * Track.CELLSIZE, y * Track.CELLSIZE, Track.CELLSIZE, Track.CELLSIZE));
                 }
             }
         }

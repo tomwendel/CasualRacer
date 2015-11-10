@@ -8,6 +8,8 @@ namespace CasualRacer.Model
 {
     internal class Track
     {
+        public const int CELLSIZE = 40;
+
         public TrackTile[,] Tiles { get; private set; }
 
         public Track(int width, int height)
