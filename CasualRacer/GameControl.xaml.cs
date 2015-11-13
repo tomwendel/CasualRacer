@@ -59,18 +59,18 @@ namespace CasualRacer
                     Brush brush = dirtBrush;
                     switch (track.Tiles[x, y])
                     {
-                    case TrackTile.Gras:
-                        brush = grasBrush;
-                        break;
-                    case TrackTile.Road:
-                        brush = roadBrush;
-                        break;
-                    case TrackTile.Sand:
-                        brush = sandBrush;
-                        break;
+                        case TrackTile.Gras:
+                            brush = grasBrush;
+                            break;
+                        case TrackTile.Road:
+                            brush = roadBrush;
+                            break;
+                        case TrackTile.Sand:
+                            brush = sandBrush;
+                            break;
                     }
 
-                    drawingContext.DrawRectangle(brush, null, new Rect(x * 40, y * 40, 40, 40));
+                    drawingContext.DrawRectangle(brush, null, new Rect(x * Track.CELLSIZE, y * Track.CELLSIZE, Track.CELLSIZE, Track.CELLSIZE));
                 }
             }
         }
@@ -86,9 +86,10 @@ namespace CasualRacer
         {
             switch (e.Key)
             {
-            case Key.Up: game.Player1.Acceleration = false; break;
-            case Key.Left: game.Player1.WheelLeft = false; break;
-            case Key.Right: game.Player1.WheelRight = false; break;
+                case Key.Up: game.Player1.Acceleration = false; break;
+                case Key.Down: game.Player1.Break = false; break;
+                case Key.Left: game.Player1.WheelLeft = false; break;
+                case Key.Right: game.Player1.WheelRight = false; break;
             }
         }
 
@@ -96,9 +97,10 @@ namespace CasualRacer
         {
             switch (e.Key)
             {
-            case Key.Up: game.Player1.Acceleration = true; break;
-            case Key.Left: game.Player1.WheelLeft = true; break;
-            case Key.Right: game.Player1.WheelRight = true; break;
+                case Key.Up: game.Player1.Acceleration = true; break;
+                case Key.Down: game.Player1.Break = true; break;
+                case Key.Left: game.Player1.WheelLeft = true; break;
+                case Key.Right: game.Player1.WheelRight = true; break;
             }
         }
 
