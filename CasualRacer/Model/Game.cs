@@ -36,9 +36,9 @@ namespace CasualRacer.Model
             // Beschleunigung & Bremse
             float targetSpeed = 0f;
             if (player.Acceleration)
-                targetSpeed += 100f;
+                targetSpeed = 100f;
             if (player.Break)
-                targetSpeed -= 50f;
+                targetSpeed = -50f;
 
             int cellX = (int)(player.Position.X / Track.CELLSIZE);
             int cellY = (int)(player.Position.Y / Track.CELLSIZE);
