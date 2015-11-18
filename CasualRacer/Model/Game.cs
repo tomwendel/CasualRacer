@@ -22,26 +22,31 @@ namespace CasualRacer.Model
 
         public void Update(TimeSpan totalTime, TimeSpan elapsedTime)
         {
+            UpdatePlayer(totalTime, elapsedTime, Player1);
+        }
+
+        private void UpdatePlayer(TimeSpan totalTime, TimeSpan elapsedTime,Player player)
+        {
             // Lenkung
-            if (Player1.WheelLeft)
-                Player1.Direction -= (float)elapsedTime.TotalSeconds * 100;
-            if (Player1.WheelRight)
-                Player1.Direction += (float)elapsedTime.TotalSeconds * 100;
+            if (player.WheelLeft)
+                player.Direction -= (float)elapsedTime.TotalSeconds * 100;
+            if (player.WheelRight)
+                player.Direction += (float)elapsedTime.TotalSeconds * 100;
 
             // Beschleunigung & Bremse
             float targetSpeed = 0f;
-            if (Player1.Acceleration)
-                targetSpeed += 100f;
-            if (Player1.Break)
-                targetSpeed -= 50f;
+            if (player.Acceleration)
+                targetSpeed = 100f;
+            if (player.Break)
+                targetSpeed = -50f;
 
-            int cellX = (int)(Player1.Position.X / Track.CELLSIZE);
-            int cellY = (int)(Player1.Position.Y / Track.CELLSIZE);
+            int cellX = (int)(player.Position.X / Track.CELLSIZE);
+            int cellY = (int)(player.Position.Y / Track.CELLSIZE);
             cellX = Math.Min(Track.Tiles.GetLength(0) - 1, Math.Max(0, cellX));
             cellY = Math.Min(Track.Tiles.GetLength(1) - 1, Math.Max(0, cellY));
             TrackTile tile = Track.Tiles[cellX, cellY];
 
-            switch(tile)
+            switch (tile)
             {
                 case TrackTile.Dirt: targetSpeed *= 0.2f; break;
                 case TrackTile.Gras: targetSpeed *= 0.8f; break;
@@ -50,25 +55,25 @@ namespace CasualRacer.Model
             }
 
             // Beschleunigung
-            if (targetSpeed > Player1.Velocity)
+            if (targetSpeed > player.Velocity)
             {
-                Player1.Velocity += 80f * (float)elapsedTime.TotalSeconds;
-                Player1.Velocity = Math.Min(targetSpeed, Player1.Velocity);
+                player.Velocity += 80f * (float)elapsedTime.TotalSeconds;
+                player.Velocity = Math.Min(targetSpeed, player.Velocity);
             }
-            else if (targetSpeed < Player1.Velocity)
+            else if (targetSpeed < player.Velocity)
             {
-                Player1.Velocity -= 100f * (float)elapsedTime.TotalSeconds;
-                Player1.Velocity = Math.Max(targetSpeed, Player1.Velocity);
+                player.Velocity -= 100f * (float)elapsedTime.TotalSeconds;
+                player.Velocity = Math.Max(targetSpeed, player.Velocity);
             }
 
 
 
             // Positionsveränderung
-            float direction = (float)(Player1.Direction * Math.PI) / 180f;
+            float direction = (float)(player.Direction * Math.PI) / 180f;
             Vector velocity = new Vector(
-                Math.Sin(direction) * Player1.Velocity * elapsedTime.TotalSeconds,
-                -Math.Cos(direction) * Player1.Velocity * elapsedTime.TotalSeconds);
-            Player1.Position += velocity;
+                Math.Sin(direction) * player.Velocity * elapsedTime.TotalSeconds,
+                -Math.Cos(direction) * player.Velocity * elapsedTime.TotalSeconds);
+            player.Position += velocity;
         }
     }
 }
