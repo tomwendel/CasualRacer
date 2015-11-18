@@ -14,7 +14,7 @@ namespace CasualRacer.Model
 
         public Game()
         {
-            Track = Track.Load("./Tracks/Track1.txt");
+            Track = Track.LoadFromTxt("./Tracks/Track1.txt");
 
             Player1 = new Player();
 
