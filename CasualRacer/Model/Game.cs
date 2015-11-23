@@ -40,19 +40,8 @@ namespace CasualRacer.Model
             if (player.Break)
                 targetSpeed = -50f;
 
-            int cellX = (int)(player.Position.X / Track.CELLSIZE);
-            int cellY = (int)(player.Position.Y / Track.CELLSIZE);
-            cellX = Math.Min(Track.Tiles.GetLength(0) - 1, Math.Max(0, cellX));
-            cellY = Math.Min(Track.Tiles.GetLength(1) - 1, Math.Max(0, cellY));
-            TrackTile tile = Track.Tiles[cellX, cellY];
-
-            switch (tile)
-            {
-                case TrackTile.Dirt: targetSpeed *= 0.2f; break;
-                case TrackTile.Gras: targetSpeed *= 0.8f; break;
-                case TrackTile.Road: targetSpeed *= 1f; break;
-                case TrackTile.Sand: targetSpeed *= 0.4f; break;
-            }
+            //Anpassung je nach Untergrund
+            targetSpeed *= Track.SpeedAdjustmentByTile(player.Position.X, player.Position.Y);
 
             // Beschleunigung
             if (targetSpeed > player.Velocity)

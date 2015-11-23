@@ -16,6 +16,24 @@ namespace CasualRacer.Model
             Tiles = new TrackTile[width, height];
         }
 
+        public float SpeedAdjustmentByTile(double PlayerX, double PlayerY)
+        {
+            int cellX = (int)(PlayerX / Track.CELLSIZE);
+            int cellY = (int)(PlayerY / Track.CELLSIZE);
+            cellX = Math.Min(Tiles.GetLength(0) - 1, Math.Max(0, cellX));
+            cellY = Math.Min(Tiles.GetLength(1) - 1, Math.Max(0, cellY));
+            TrackTile tile = Tiles[cellX, cellY];
+
+            float retVal = 0.0f;
+            switch (tile)
+            {
+                case TrackTile.Dirt: retVal = 0.2f; break;
+                case TrackTile.Gras: retVal = 0.8f; break;
+                case TrackTile.Road: retVal = 1f; break;
+                case TrackTile.Sand: retVal = 0.4f; break;
+            }
+            return retVal;
+        }
         public static Track LoadFromTxt(string path)
         {
             if (path == null)
