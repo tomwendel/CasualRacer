@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Windows;
 
 namespace CasualRacer.Model
 {
@@ -16,13 +17,16 @@ namespace CasualRacer.Model
             Tiles = new TrackTile[width, height];
         }
 
-        public float SpeedAdjustmentByTile(double PlayerX, double PlayerY)
+        /// <summary>
+        /// Liefert den Geschwindigkeitsmultiplikator auf Basis einer Position. 
+        /// Liegt die Position außerhalb des Spielfeldes, wird der nächste Punkt 
+        /// innerhalb des gültigen Spielfeldes gesucht.
+        /// </summary>
+        /// <param name="position">Position</param>
+        /// <returns>Geschwindigkeitsmultiplikator</returns>
+        public float GetSpeedByPosition(Vector position)
         {
-            int cellX = (int)(PlayerX / Track.CELLSIZE);
-            int cellY = (int)(PlayerY / Track.CELLSIZE);
-            cellX = Math.Min(Tiles.GetLength(0) - 1, Math.Max(0, cellX));
-            cellY = Math.Min(Tiles.GetLength(1) - 1, Math.Max(0, cellY));
-            TrackTile tile = Tiles[cellX, cellY];
+            TrackTile tile = GetTileByPosition(position);
 
             float retVal = 0.0f;
             switch (tile)
@@ -34,6 +38,23 @@ namespace CasualRacer.Model
             }
             return retVal;
         }
+
+        /// <summary>
+        /// Liefert den Zelleninhalt auf Basis einer Position. 
+        /// Liegt die Position außerhalb des Spielfeldes, wird der nächste 
+        /// Punkt innerhalb des gültigen Spielfeldes gesucht.
+        /// </summary>
+        /// <param name="position">Position</param>
+        /// <returns>Zelleninhalt</returns>
+        public TrackTile GetTileByPosition(Vector position)
+        {
+            int cellX = (int)(position.X / CELLSIZE);
+            int cellY = (int)(position.Y / CELLSIZE);
+            cellX = Math.Min(Tiles.GetLength(0) - 1, Math.Max(0, cellX));
+            cellY = Math.Min(Tiles.GetLength(1) - 1, Math.Max(0, cellY));
+            return Tiles[cellX, cellY];
+        }
+
         public static Track LoadFromTxt(string path)
         {
             if (path == null)

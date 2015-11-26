@@ -41,7 +41,7 @@ namespace CasualRacer.Model
                 targetSpeed = -50f;
 
             //Anpassung je nach Untergrund
-            targetSpeed *= Track.SpeedAdjustmentByTile(player.Position.X, player.Position.Y);
+            targetSpeed *= Track.GetSpeedByPosition(player.Position);
 
             // Beschleunigung
             if (targetSpeed > player.Velocity)
