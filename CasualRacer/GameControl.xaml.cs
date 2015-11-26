@@ -52,6 +52,10 @@ namespace CasualRacer
             Brush grasBrush = new SolidColorBrush(Color.FromArgb(255, 76, 255, 0));
             Brush roadBrush = new SolidColorBrush(Color.FromArgb(255, 128, 128, 128));
 
+            var path = System.IO.Path.Combine(Environment.CurrentDirectory, "Assets");
+            ImageSource imageSource = new BitmapImage(new Uri(path + "\\dirt_center.png"));
+            ImageBrush imageBrush = new ImageBrush(imageSource);
+
             for (int x = 0; x < track.Tiles.GetLength(0); x++)
             {
                 for (int y = 0; y < track.Tiles.GetLength(1); y++)
@@ -73,6 +77,8 @@ namespace CasualRacer
                     drawingContext.DrawRectangle(brush, null, new Rect(x * Track.CELLSIZE, y * Track.CELLSIZE, Track.CELLSIZE, Track.CELLSIZE));
                 }
             }
+
+            drawingContext.DrawRectangle(imageBrush, null, new Rect(100, 100, 300, 300));
         }
 
         private void OnRendering(object sender, EventArgs e)
