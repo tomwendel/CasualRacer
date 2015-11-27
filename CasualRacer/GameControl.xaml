@@ -9,18 +9,17 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
     <Canvas>
-        <Border Canvas.Left="-10"
+        <Image Canvas.Left="-10"
                 Canvas.Top="-10"
                 Width="20"
                 Height="20"
-                Background="Red"
-                RenderTransformOrigin="0.5,0.5">
-            <Border.RenderTransform>
+                RenderTransformOrigin="0.5,0.5" Source="Assets/car_red.png">
+            <Image.RenderTransform>
                 <TransformGroup>
                     <RotateTransform Angle="{Binding Path=Player1.Direction}" />
                     <TranslateTransform X="{Binding Path=Player1.Position.X}" Y="{Binding Path=Player1.Position.Y}" />
                 </TransformGroup>
-            </Border.RenderTransform>
-        </Border>
+            </Image.RenderTransform>
+        </Image>
     </Canvas>
 </UserControl>

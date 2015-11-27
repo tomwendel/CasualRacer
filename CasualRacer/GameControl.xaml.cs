@@ -28,6 +28,12 @@ namespace CasualRacer
         private readonly Stopwatch totalWatch = new Stopwatch();
         private readonly Stopwatch elapsedWatch = new Stopwatch();
 
+        private ImageBrush dirtBrush;
+        private ImageBrush sandBrush;
+        private ImageBrush grassBrush;
+        private ImageBrush roadBrush;
+        private ImageBrush tilesBrush;
+
         public GameControl()
         {
             InitializeComponent();
@@ -39,6 +45,14 @@ namespace CasualRacer
 
             Application.Current.MainWindow.KeyDown += MainWindow_KeyDown;
             Application.Current.MainWindow.KeyUp += MainWindow_KeyUp;
+
+            var path = System.IO.Path.Combine(Environment.CurrentDirectory, "Assets");
+            dirtBrush = new ImageBrush(new BitmapImage(new Uri(path + "\\dirt_center.png")));
+            sandBrush = new ImageBrush(new BitmapImage(new Uri(path + "\\sand_center.png")));
+            grassBrush = new ImageBrush(new BitmapImage(new Uri(path + "\\grass_center.png")));
+            roadBrush = new ImageBrush(new BitmapImage(new Uri(path + "\\asphalt_center.png")));
+
+            tilesBrush = new ImageBrush(new BitmapImage(new Uri(path + "\\tiles.png")));
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -47,14 +61,14 @@ namespace CasualRacer
 
             Track track = game.Track;
 
-            Brush dirtBrush = new SolidColorBrush(Color.FromArgb(255, 127, 51, 0));
-            Brush sandBrush = new SolidColorBrush(Color.FromArgb(255, 255, 226, 147));
-            Brush grasBrush = new SolidColorBrush(Color.FromArgb(255, 76, 255, 0));
-            Brush roadBrush = new SolidColorBrush(Color.FromArgb(255, 128, 128, 128));
+            tilesBrush.TileMode = TileMode.Tile;
+            tilesBrush.Viewport = new Rect(0, 0, 1f / track.Tiles.GetLength(0), 1f / track.Tiles.GetLength(1));
+            tilesBrush.ViewportUnits = BrushMappingMode.RelativeToBoundingBox;
 
-            var path = System.IO.Path.Combine(Environment.CurrentDirectory, "Assets");
-            ImageSource imageSource = new BitmapImage(new Uri(path + "\\dirt_center.png"));
-            ImageBrush imageBrush = new ImageBrush(imageSource);
+            tilesBrush.Viewbox = new Rect(1820, 0, 128, 128);
+            tilesBrush.ViewboxUnits = BrushMappingMode.Absolute;
+
+            drawingContext.DrawRectangle(tilesBrush, null, new Rect(0, 0, Track.CELLSIZE * track.Tiles.GetLength(0), Track.CELLSIZE * track.Tiles.GetLength(1)));
 
             for (int x = 0; x < track.Tiles.GetLength(0); x++)
             {
@@ -64,7 +78,7 @@ namespace CasualRacer
                     switch (track.Tiles[x, y])
                     {
                         case TrackTile.Gras:
-                            brush = grasBrush;
+                            brush = grassBrush;
                             break;
                         case TrackTile.Road:
                             brush = roadBrush;
@@ -77,8 +91,6 @@ namespace CasualRacer
                     drawingContext.DrawRectangle(brush, null, new Rect(x * Track.CELLSIZE, y * Track.CELLSIZE, Track.CELLSIZE, Track.CELLSIZE));
                 }
             }
-
-            drawingContext.DrawRectangle(imageBrush, null, new Rect(100, 100, 300, 300));
         }
 
         private void OnRendering(object sender, EventArgs e)
