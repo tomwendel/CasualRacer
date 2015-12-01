@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel;
 using System.Windows;
 
 namespace CasualRacer.Model
@@ -15,6 +11,9 @@ namespace CasualRacer.Model
 
         private Vector position = new Vector();
 
+        /// <summary>
+        /// Ruft die Richtung ab oder setzt diese.
+        /// </summary>
         public float Direction
         {
             get { return direction; }
@@ -28,6 +27,9 @@ namespace CasualRacer.Model
             }
         }
 
+        /// <summary>
+        /// Ruft die Position ab oder setzt diese.
+        /// </summary>
         public Vector Position
         {
             get { return position; }
@@ -41,6 +43,9 @@ namespace CasualRacer.Model
             }
         }
 
+        /// <summary>
+        /// Ruft die Geschwindigkeit ab oder setzt diese.
+        /// </summary>
         public float Velocity
         {
             get { return velocity; }
@@ -54,17 +59,25 @@ namespace CasualRacer.Model
             }
         }
 
+        /// <summary>
+        /// Ruft ab, ob der Spieler beschleunigt.
+        /// </summary>
         public bool Acceleration { get; set; }
 
+        /// <summary>
+        /// Ruft ab, ob der Spieler bremst.
+        /// </summary>
         public bool Break { get; set; }
 
+        /// <summary>
+        /// Ruft ab, ob der Spieler nach links lenkt.
+        /// </summary>
         public bool WheelLeft { get; set; }
 
+        /// <summary>
+        /// Ruft ab, ob der Spieler nach rechts lenkt.
+        /// </summary>
         public bool WheelRight { get; set; }
-
-        public Player()
-        {
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

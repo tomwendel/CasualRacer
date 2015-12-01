@@ -4,14 +4,27 @@ using System.IO;
 using System.Text;
 using System.Windows;
 
+using static System.Math;
+
 namespace CasualRacer.Model
 {
     internal class Track
     {
+        /// <summary>
+        /// Die Seitenlänge der Zellen.
+        /// </summary>
         public const int CELLSIZE = 40;
 
-        public TrackTile[,] Tiles { get; private set; }
+        /// <summary>
+        /// Ruft die Zellen ab.
+        /// </summary>
+        public TrackTile[,] Tiles { get; }
 
+        /// <summary>
+        /// Erzeugt eine neue Instanz der <see cref="Track"/> Klasse.
+        /// </summary>
+        /// <param name="width">Die Breite des Tracks.</param>
+        /// <param name="height">Die Höhe des Tracks.</param>
         public Track(int width, int height)
         {
             Tiles = new TrackTile[width, height];
@@ -26,9 +39,9 @@ namespace CasualRacer.Model
         /// <returns>Geschwindigkeitsmultiplikator</returns>
         public float GetSpeedByPosition(Vector position)
         {
-            TrackTile tile = GetTileByPosition(position);
+            var tile = GetTileByPosition(position);
 
-            float retVal = 0.0f;
+            var retVal = 0.0f;
             switch (tile)
             {
                 case TrackTile.Dirt: retVal = 0.2f; break;
@@ -36,6 +49,7 @@ namespace CasualRacer.Model
                 case TrackTile.Road: retVal = 1f; break;
                 case TrackTile.Sand: retVal = 0.4f; break;
             }
+
             return retVal;
         }
 
@@ -48,13 +62,19 @@ namespace CasualRacer.Model
         /// <returns>Zelleninhalt</returns>
         public TrackTile GetTileByPosition(Vector position)
         {
-            int cellX = (int)(position.X / CELLSIZE);
-            int cellY = (int)(position.Y / CELLSIZE);
-            cellX = Math.Min(Tiles.GetLength(0) - 1, Math.Max(0, cellX));
-            cellY = Math.Min(Tiles.GetLength(1) - 1, Math.Max(0, cellY));
+            var cellX = (int)(position.X / CELLSIZE);
+            var cellY = (int)(position.Y / CELLSIZE);
+            cellX = Min(Tiles.GetLength(0) - 1, Max(0, cellX));
+            cellY = Min(Tiles.GetLength(1) - 1, Max(0, cellY));
             return Tiles[cellX, cellY];
         }
 
+        /// <summary>
+        /// Lädt einen Track aus einer .txt-Datei, in der jedes Zeichen den Track-Typ angibt.
+        /// </summary>
+        /// <param name="path">Der Pfad zu der zu ladenden Datei.</param>
+        /// <returns>Den geladenen Track.</returns>
+        /// <exception cref="ArgumentNullException">Der Pfad darf nicht null sein.</exception>
         public static Track LoadFromTxt(string path)
         {
             if (path == null)
@@ -68,6 +88,15 @@ namespace CasualRacer.Model
             }
         }
 
+        /// <summary>
+        /// Lädt einen Track aus einer .txt-Datei, in der jedes Zeichen den Track-Typ angibt.
+        /// </summary>
+        /// <param name="stream">Der <see cref="Stream" />, der die Dateiinhalte liefert.</param>
+        /// <returns>
+        /// Den geladenen Track.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">Der Stream darf nicht null sein.</exception>
+        /// <exception cref="FormatException">Die Datei ist leer.</exception>
         public static Track LoadFromTxt(Stream stream)
         {
             if (stream == null)
@@ -75,70 +104,36 @@ namespace CasualRacer.Model
                 throw new ArgumentNullException(nameof(stream));
             }
 
-            using (StreamReader sr = new StreamReader(stream, Encoding.ASCII))
+            using (var streamReader = new StreamReader(stream, Encoding.ASCII))
             {
-                if (sr.EndOfStream)
+                if (streamReader.EndOfStream)
                 {
                     throw new FormatException("The file must not be empty.");
                 }
 
                 // reading the first line is outside the loop to calculate the size for the list
-                string line = sr.ReadLine();
+                var line = streamReader.ReadLine();
 
-                int tilesPerLine = line.Length;
+                var tilesPerLine = line.Length;
 
-                List<TrackTile[]> tiles = new List<TrackTile[]>((int)Math.Ceiling((float)stream.Length / line.Length));
+                var allTiles = new List<TrackTile[]>((int)Ceiling((float)stream.Length / line.Length));
 
-                for (int y = 0; ; y++, line = sr.ReadLine())
+                for (var y = 0; !streamReader.EndOfStream; y++, line = streamReader.ReadLine())
                 {
-                    if (line.Length == 0)
-                    {
-                        throw new FormatException("The file must not contain empty lines.");
-                    }
+                    var tilesForThisLine = GetTilesFromLine(line, tilesPerLine, y);
 
-                    if (line.Length != tilesPerLine)
-                    {
-                        throw new FormatException(string.Format("Line {0} contains a deviating amount of tiles.", y + 1));
-                    }
-
-                    TrackTile[] tilesForThisLine = new TrackTile[tilesPerLine];
-
-                    for (int x = 0; x < line.Length; x++)
-                    {
-                        string tileTypeAsString = line.Substring(x, 1);
-                        int tileTypeAsInt;
-
-                        if (!int.TryParse(tileTypeAsString, out tileTypeAsInt) || !Enum.IsDefined(typeof(TrackTile), tileTypeAsInt))
-                        {
-                            throw new FormatException(string.Format("Line {0} contains a not supported tile identifier {1}.", y, tileTypeAsString));
-                        }
-
-                        TrackTile tileType = (TrackTile)tileTypeAsInt;
-
-                        if  (tileType != default(TrackTile))
-                        {
-                            tilesForThisLine[x] = tileType;
-                        }
-                    }
-
-                    tiles.Add(tilesForThisLine);
-
-                    if (sr.EndOfStream)
-                    {
-                        break;
-                    }
+                    allTiles.Add(tilesForThisLine);
                 }
 
-                Track result = new Track(tilesPerLine, tiles.Count);
-
+                var result = new Track(tilesPerLine, allTiles.Count);
                 {
-                    int y = 0;
+                    var y = 0;
 
-                    foreach (TrackTile[] curTiles in tiles)
+                    foreach (var tileRow in allTiles)
                     {
-                        for (int x = 0; x < tilesPerLine; x++)
+                        for (var x = 0; x < tilesPerLine; x++)
                         {
-                            result.Tiles[x, y] = curTiles[x];
+                            result.Tiles[x, y] = tileRow[x];
                         }
 
                         y++;
@@ -148,6 +143,48 @@ namespace CasualRacer.Model
 
                 return result;
             }
+        }
+
+        /// <summary>
+        /// Lädt die Tiles einer Zeile der Eingabedatei.
+        /// </summary>
+        /// <param name="line">Die Eingabezeile.</param>
+        /// <param name="tilesPerLine">Die Anzahl der Tiles in einer Zeile.</param>
+        /// <param name="lineNumber">Die dazugehörige Zeilennummer.</param>
+        /// <returns>Das geladene Array von <see cref="TrackTile"/>s.</returns>
+        /// <exception cref="FormatException">Die Zeile darf nicht leer sein, muss genau so lang sein wie vorgesehen und darf nur Werte aus <see cref="TrackTile"/> enthalten.</exception>
+        private static TrackTile[] GetTilesFromLine(string line, int tilesPerLine, int lineNumber)
+        {
+            if (line.Length == 0)
+            {
+                throw new FormatException("The file must not contain empty lines.");
+            }
+
+            if (line.Length != tilesPerLine)
+            {
+                throw new FormatException($"Line {lineNumber + 1} contains a deviating amount of tiles.");
+            }
+
+            var tilesForThisLine = new TrackTile[tilesPerLine];
+
+            for (var x = 0; x < line.Length; x++)
+            {
+                var tileTypeAsString = line.Substring(x, 1);
+                int tileTypeAsInt;
+
+                if (!int.TryParse(tileTypeAsString, out tileTypeAsInt) || !Enum.IsDefined(typeof(TrackTile), tileTypeAsInt))
+                {
+                    throw new FormatException($"Line {lineNumber} contains a not supported tile identifier {tileTypeAsString}.");
+                }
+
+                var tileType = (TrackTile)tileTypeAsInt;
+
+                if (tileType != default(TrackTile))
+                {
+                    tilesForThisLine[x] = tileType;
+                }
+            }
+            return tilesForThisLine;
         }
     }
 }

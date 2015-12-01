@@ -1,16 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
+
+using static System.Math;
 
 namespace CasualRacer.Model
 {
     internal class Game
     {
-        public Track Track { get; private set; }
+        /// <summary>
+        /// Ruft den <see cref="Track"/> ab.
+        /// </summary>
+        public Track Track { get; }
 
-        public Player Player1 { get; private set; }
+        /// <summary>
+        /// Ruft den <see cref="Player"/> 1 ab.
+        /// </summary>
+        public Player Player1 { get; }
 
         public Game()
         {
@@ -20,12 +25,23 @@ namespace CasualRacer.Model
 
         }
 
+        /// <summary>
+        /// Aktualisiert den Spielstatus.
+        /// </summary>
+        /// <param name="totalTime">Die total abgelaufene Zeit.</param>
+        /// <param name="elapsedTime">Die abgelaufene Zeit seit dem letzten Update.</param>
         public void Update(TimeSpan totalTime, TimeSpan elapsedTime)
         {
             UpdatePlayer(totalTime, elapsedTime, Player1);
         }
 
-        private void UpdatePlayer(TimeSpan totalTime, TimeSpan elapsedTime,Player player)
+        /// <summary>
+        /// Aktualisiert den gegebenen Spieler.
+        /// </summary>
+        /// <param name="totalTime">Die total abgelaufene Zeit.</param>
+        /// <param name="elapsedTime">Die abgelaufene Zeit seit dem letzten Update.</param>
+        /// <param name="player">Der Spieler.</param>
+        private void UpdatePlayer(TimeSpan totalTime, TimeSpan elapsedTime, Player player)
         {
             // Lenkung
             if (player.WheelLeft)
@@ -34,34 +50,32 @@ namespace CasualRacer.Model
                 player.Direction += (float)elapsedTime.TotalSeconds * 100;
 
             // Beschleunigung & Bremse
-            float targetSpeed = 0f;
+            var targetSpeed = 0f;
             if (player.Acceleration)
                 targetSpeed = 100f;
             if (player.Break)
                 targetSpeed = -50f;
 
-            //Anpassung je nach Untergrund
+            // Anpassung je nach Untergrund
             targetSpeed *= Track.GetSpeedByPosition(player.Position);
 
             // Beschleunigung
             if (targetSpeed > player.Velocity)
             {
                 player.Velocity += 80f * (float)elapsedTime.TotalSeconds;
-                player.Velocity = Math.Min(targetSpeed, player.Velocity);
+                player.Velocity = Min(targetSpeed, player.Velocity);
             }
             else if (targetSpeed < player.Velocity)
             {
                 player.Velocity -= 100f * (float)elapsedTime.TotalSeconds;
-                player.Velocity = Math.Max(targetSpeed, player.Velocity);
+                player.Velocity = Max(targetSpeed, player.Velocity);
             }
 
-
-
             // Positionsveränderung
-            float direction = (float)(player.Direction * Math.PI) / 180f;
-            Vector velocity = new Vector(
-                Math.Sin(direction) * player.Velocity * elapsedTime.TotalSeconds,
-                -Math.Cos(direction) * player.Velocity * elapsedTime.TotalSeconds);
+            var direction = (float)(player.Direction * PI) / 180f;
+            var velocity = new Vector(
+                Sin(direction) * player.Velocity * elapsedTime.TotalSeconds, 
+                -Cos(direction) * player.Velocity * elapsedTime.TotalSeconds);
             player.Position += velocity;
         }
     }
