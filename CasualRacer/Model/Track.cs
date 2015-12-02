@@ -118,11 +118,16 @@ namespace CasualRacer.Model
 
                 var allTiles = new List<TrackTile[]>((int)Ceiling((float)stream.Length / line.Length));
 
-                for (var y = 0; !streamReader.EndOfStream; y++, line = streamReader.ReadLine())
+                for (var y = 0; ; y++, line = streamReader.ReadLine())
                 {
                     var tilesForThisLine = GetTilesFromLine(line, tilesPerLine, y);
 
                     allTiles.Add(tilesForThisLine);
+
+                    if (streamReader.EndOfStream)
+                    {
+                        break;
+                    }
                 }
 
                 var result = new Track(tilesPerLine, allTiles.Count);
