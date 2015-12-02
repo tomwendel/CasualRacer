@@ -96,7 +96,7 @@ namespace CasualRacer.Model
         /// </returns>
         /// <exception cref="ArgumentNullException">Der Stream darf nicht null sein.</exception>
         /// <exception cref="FormatException">Die Datei ist leer.</exception>
-        private static Track LoadFromTxt(Stream stream)
+        public static Track LoadFromTxt(Stream stream)
         {
             if (stream == null)
             {
