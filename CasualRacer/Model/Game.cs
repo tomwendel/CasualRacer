@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows;
 
-using static System.Math;
-
 namespace CasualRacer.Model
 {
     internal class Game
@@ -63,19 +61,19 @@ namespace CasualRacer.Model
             if (targetSpeed > player.Velocity)
             {
                 player.Velocity += 80f * (float)elapsedTime.TotalSeconds;
-                player.Velocity = Min(targetSpeed, player.Velocity);
+                player.Velocity = Math.Min(targetSpeed, player.Velocity);
             }
             else if (targetSpeed < player.Velocity)
             {
                 player.Velocity -= 100f * (float)elapsedTime.TotalSeconds;
-                player.Velocity = Max(targetSpeed, player.Velocity);
+                player.Velocity = Math.Max(targetSpeed, player.Velocity);
             }
 
             // Positionsveränderung
-            var direction = (float)(player.Direction * PI) / 180f;
+            var direction = (float)(player.Direction * Math.PI) / 180f;
             var velocity = new Vector(
-                Sin(direction) * player.Velocity * elapsedTime.TotalSeconds, 
-                -Cos(direction) * player.Velocity * elapsedTime.TotalSeconds);
+                Math.Sin(direction) * player.Velocity * elapsedTime.TotalSeconds, 
+                -Math.Cos(direction) * player.Velocity * elapsedTime.TotalSeconds);
             player.Position += velocity;
         }
     }

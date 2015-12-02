@@ -4,8 +4,6 @@ using System.IO;
 using System.Text;
 using System.Windows;
 
-using static System.Math;
-
 namespace CasualRacer.Model
 {
     internal class Track
@@ -64,8 +62,8 @@ namespace CasualRacer.Model
         {
             var cellX = (int)(position.X / CELLSIZE);
             var cellY = (int)(position.Y / CELLSIZE);
-            cellX = Min(Tiles.GetLength(0) - 1, Max(0, cellX));
-            cellY = Min(Tiles.GetLength(1) - 1, Max(0, cellY));
+            cellX = Math.Min(Tiles.GetLength(0) - 1, Math.Max(0, cellX));
+            cellY = Math.Min(Tiles.GetLength(1) - 1, Math.Max(0, cellY));
             return Tiles[cellX, cellY];
         }
 
@@ -116,7 +114,7 @@ namespace CasualRacer.Model
 
                 var tilesPerLine = line.Length;
 
-                var allTiles = new List<TrackTile[]>((int)Ceiling((float)stream.Length / line.Length));
+                var allTiles = new List<TrackTile[]>((int)Math.Ceiling((float)stream.Length / line.Length));
 
                 for (var y = 0; ; y++, line = streamReader.ReadLine())
                 {
