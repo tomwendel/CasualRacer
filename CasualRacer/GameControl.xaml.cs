@@ -66,7 +66,7 @@ namespace CasualRacer
             {
                 for (var y = 0; y < track.Tiles.GetLength(1); y++)
                 {
-                    Brush brush = dirtBrush;
+                    var brush = dirtBrush;
                     switch (track.Tiles[x, y])
                     {
                         case TrackTile.Gras:
@@ -87,7 +87,7 @@ namespace CasualRacer
 
         private void OnRendering(object sender, EventArgs e)
         {
-            var elapsed = elapsedWatch.Elapsed;
+            TimeSpan elapsed = elapsedWatch.Elapsed;
             elapsedWatch.Restart();
             game.Update(totalWatch.Elapsed, elapsed);
         }

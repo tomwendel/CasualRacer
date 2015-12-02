@@ -39,16 +39,16 @@ namespace CasualRacer.Model
         {
             var tile = GetTileByPosition(position);
 
-            var retVal = 0.0f;
+            var speed = 0.0f;
             switch (tile)
             {
-                case TrackTile.Dirt: retVal = 0.2f; break;
-                case TrackTile.Gras: retVal = 0.8f; break;
-                case TrackTile.Road: retVal = 1f; break;
-                case TrackTile.Sand: retVal = 0.4f; break;
+                case TrackTile.Dirt: speed = 0.2f; break;
+                case TrackTile.Gras: speed = 0.8f; break;
+                case TrackTile.Road: speed = 1f; break;
+                case TrackTile.Sand: speed = 0.4f; break;
             }
 
-            return retVal;
+            return speed;
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace CasualRacer.Model
         /// </returns>
         /// <exception cref="ArgumentNullException">Der Stream darf nicht null sein.</exception>
         /// <exception cref="FormatException">Die Datei ist leer.</exception>
-        public static Track LoadFromTxt(Stream stream)
+        private static Track LoadFromTxt(Stream stream)
         {
             if (stream == null)
             {
@@ -112,39 +112,19 @@ namespace CasualRacer.Model
                 // reading the first line is outside the loop to calculate the size for the list
                 var line = streamReader.ReadLine();
 
-                var tilesPerLine = line.Length;
+                int tilesPerLine = line.Length;
 
                 var allTiles = new List<TrackTile[]>((int)Math.Ceiling((float)stream.Length / line.Length));
 
-                for (var y = 0; ; y++, line = streamReader.ReadLine())
+                var y = 1;
+
+                do
                 {
-                    var tilesForThisLine = GetTilesFromLine(line, tilesPerLine, y);
-
-                    allTiles.Add(tilesForThisLine);
-
-                    if (streamReader.EndOfStream)
-                    {
-                        break;
-                    }
+                    allTiles.Add(GetTilesFromLine(line, tilesPerLine, y++));
                 }
+                while (!string.IsNullOrEmpty(line = streamReader.ReadLine()));
 
-                var result = new Track(tilesPerLine, allTiles.Count);
-                {
-                    var y = 0;
-
-                    foreach (var tileRow in allTiles)
-                    {
-                        for (var x = 0; x < tilesPerLine; x++)
-                        {
-                            result.Tiles[x, y] = tileRow[x];
-                        }
-
-                        y++;
-                    }
-
-                }
-
-                return result;
+                return BuildTrack(tilesPerLine, allTiles);
             }
         }
 
@@ -188,6 +168,30 @@ namespace CasualRacer.Model
                 }
             }
             return tilesForThisLine;
+        }
+
+        /// <summary>
+        /// Baut ein <see cref="Track"/> Objekt aus den gegebenen Tiles.
+        /// </summary>
+        /// <param name="tilesPerLine">Die Anzahl an Tiles pro Zeile.</param>
+        /// <param name="allTiles">Die Liste aller Tiles.</param>
+        /// <returns>Ein <see cref="Track"/> Objekt zusammengesetzt aus den Tiles.</returns>
+        private static Track BuildTrack(int tilesPerLine, ICollection<TrackTile[]> allTiles)
+        {
+            int y = 0;
+
+            var track = new Track(tilesPerLine, allTiles.Count);
+
+            foreach (var tileRow in allTiles)
+            {
+                for (var x = 0; x < tilesPerLine; x++)
+                {
+                    track.Tiles[x, y] = tileRow[x];
+                }
+
+                y++;
+            }
+            return track;
         }
     }
 }
