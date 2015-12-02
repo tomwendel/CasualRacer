@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 
@@ -122,7 +123,7 @@ namespace CasualRacer.Model
                 {
                     allTiles.Add(GetTilesFromLine(line, tilesPerLine, y++));
                 }
-                while (!string.IsNullOrEmpty(line = streamReader.ReadLine()));
+                while ((line = streamReader.ReadLine()) != null);
 
                 return BuildTrack(tilesPerLine, allTiles);
             }
@@ -176,11 +177,11 @@ namespace CasualRacer.Model
         /// <param name="tilesPerLine">Die Anzahl an Tiles pro Zeile.</param>
         /// <param name="allTiles">Die Liste aller Tiles.</param>
         /// <returns>Ein <see cref="Track"/> Objekt zusammengesetzt aus den Tiles.</returns>
-        private static Track BuildTrack(int tilesPerLine, ICollection<TrackTile[]> allTiles)
+        private static Track BuildTrack(int tilesPerLine, IEnumerable<TrackTile[]> allTiles)
         {
             int y = 0;
 
-            var track = new Track(tilesPerLine, allTiles.Count);
+            var track = new Track(tilesPerLine, allTiles.Count());
 
             foreach (var tileRow in allTiles)
             {
