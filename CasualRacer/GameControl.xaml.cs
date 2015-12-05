@@ -1,20 +1,12 @@
-﻿using CasualRacer.Model;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
-using System.Threading;
+
+using CasualRacer.Model;
 
 namespace CasualRacer
 {
@@ -28,11 +20,11 @@ namespace CasualRacer
         private readonly Stopwatch totalWatch = new Stopwatch();
         private readonly Stopwatch elapsedWatch = new Stopwatch();
 
-        private ImageBrush dirtBrush;
-        private ImageBrush sandBrush;
-        private ImageBrush grassBrush;
-        private ImageBrush roadBrush;
-        private ImageBrush tilesBrush;
+        private readonly ImageBrush dirtBrush;
+        private readonly ImageBrush sandBrush;
+        private readonly ImageBrush grassBrush;
+        private readonly ImageBrush roadBrush;
+        private readonly ImageBrush tilesBrush;
 
         public GameControl()
         {
@@ -59,7 +51,7 @@ namespace CasualRacer
         {
             base.OnRender(drawingContext);
 
-            Track track = game.Track;
+            var track = game.Track;
 
             tilesBrush.TileMode = TileMode.Tile;
             tilesBrush.Viewport = new Rect(0, 0, 1f / track.Tiles.GetLength(0), 1f / track.Tiles.GetLength(1));
@@ -70,11 +62,11 @@ namespace CasualRacer
 
             drawingContext.DrawRectangle(tilesBrush, null, new Rect(0, 0, Track.CELLSIZE * track.Tiles.GetLength(0), Track.CELLSIZE * track.Tiles.GetLength(1)));
 
-            for (int x = 0; x < track.Tiles.GetLength(0); x++)
+            for (var x = 0; x < track.Tiles.GetLength(0); x++)
             {
-                for (int y = 0; y < track.Tiles.GetLength(1); y++)
+                for (var y = 0; y < track.Tiles.GetLength(1); y++)
                 {
-                    Brush brush = dirtBrush;
+                    var brush = dirtBrush;
                     switch (track.Tiles[x, y])
                     {
                         case TrackTile.Gras:
