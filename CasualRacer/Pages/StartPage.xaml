@@ -71,8 +71,8 @@
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="button1">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="1">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <BounceEase EasingMode="EaseOut" Bounces="8" Bounciness="5"/>
                     </EasingDoubleKeyFrame.EasingFunction>
@@ -80,8 +80,8 @@
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="button2">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="1">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1.1" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <BounceEase EasingMode="EaseOut" Bounces="8" Bounciness="5"/>
                     </EasingDoubleKeyFrame.EasingFunction>
@@ -89,8 +89,8 @@
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="button3">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="1">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1.2" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <BounceEase EasingMode="EaseOut" Bounces="8" Bounciness="5"/>
                     </EasingDoubleKeyFrame.EasingFunction>
@@ -107,8 +107,8 @@
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="button1">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="1">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <BounceEase EasingMode="EaseOut" Bounces="8" Bounciness="5"/>
                     </EasingDoubleKeyFrame.EasingFunction>
@@ -116,8 +116,8 @@
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="button2">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="1">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1.1" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <BounceEase EasingMode="EaseOut" Bounces="8" Bounciness="5"/>
                     </EasingDoubleKeyFrame.EasingFunction>
@@ -125,8 +125,8 @@
             </DoubleAnimationUsingKeyFrames>
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="button3">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="1">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.9" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:1.2" Value="1">
                     <EasingDoubleKeyFrame.EasingFunction>
                         <BounceEase EasingMode="EaseOut" Bounces="8" Bounciness="5"/>
                     </EasingDoubleKeyFrame.EasingFunction>
@@ -169,12 +169,6 @@
             </Image.RenderTransform>
         </Image>
         <StackPanel Width="208" VerticalAlignment="Bottom" Margin="100">
-            <!--<Border Grid.Row="0" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Border.Background>
-                    <ImageBrush ImageSource="/CasualRacer;component/Assets/ButtonBorder.png" TileMode="Tile" Stretch="None" ViewboxUnits="Absolute" ViewportUnits="Absolute" Viewbox="0,0,18,3" Viewport="0,0,18,3" />
-                </Border.Background>
-
-            </Border>-->
             <Button x:Name="button" Content="Start Game" Click="GameButton_Click" RenderTransformOrigin="0.5,0.5"  >
                 <Button.RenderTransform>
                     <TransformGroup>
