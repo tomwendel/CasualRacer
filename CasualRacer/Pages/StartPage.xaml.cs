@@ -1,5 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
+using System.Windows.Navigation;
 
 namespace CasualRacer.Pages
 {
@@ -11,6 +15,16 @@ namespace CasualRacer.Pages
         public StartPage()
         {
             InitializeComponent();
+        }
+
+        public StartPage(bool animateLogo)
+        {
+            InitializeComponent();
+
+            if (animateLogo)
+            {
+                ((Storyboard)Resources["LoadLogo"]).Begin();
+            }
         }
 
         private void GameButton_Click(object sender, RoutedEventArgs e)

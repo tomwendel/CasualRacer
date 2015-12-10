@@ -7,15 +7,107 @@
       mc:Ignorable="d" 
       d:DesignHeight="720" d:DesignWidth="1280"
       Title="StartPage">
+    <Page.Resources>
+        <Storyboard x:Key="LoadLogo">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="image">
+                <EasingDoubleKeyFrame KeyTime="0" Value="-1100">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.8" Value="-1100">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:1.3" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseOut" Power="3"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="image1">
+                <EasingDoubleKeyFrame KeyTime="0" Value="1100">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:1.5" Value="1100">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <PowerEase EasingMode="EaseOut" Power="3"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="image2">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ElasticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:2.3" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ElasticEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:3.3" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ElasticEase EasingMode="EaseInOut" />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+
+    </Page.Resources>
 
     <Grid>
-        <Image Source="/CasualRacer;component/Assets/LogoCroped.png" Width="755" VerticalAlignment="Top" Margin="100" />
-        <StackPanel Width="200" VerticalAlignment="Bottom" Margin="100">
+        <Image x:Name="image" Source="/CasualRacer;component/Assets/LogoTop.png" Width="755" VerticalAlignment="Top" Margin="100" RenderTransformOrigin="0.5,0.5" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform X="0"/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image x:Name="image1" Source="/CasualRacer;component/Assets/LogoBottom.png" Width="755" VerticalAlignment="Top" Margin="100" RenderTransformOrigin="0.5,0.5" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform X="0"/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <Image x:Name="image2" Source="/CasualRacer;component/Assets/LogoCars.png" Width="755" VerticalAlignment="Top" Margin="100" RenderTransformOrigin="1,0" Opacity="1" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
+        <StackPanel Width="208" VerticalAlignment="Bottom" Margin="100">
+            <!--<Border Grid.Row="0" Height="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Border.Background>
+                    <ImageBrush ImageSource="/CasualRacer;component/Assets/ButtonBorder.png" TileMode="Tile" Stretch="None" ViewboxUnits="Absolute" ViewportUnits="Absolute" Viewbox="0,0,18,3" Viewport="0,0,18,3" />
+                </Border.Background>
+
+            </Border>-->
             <Button Content="Start Game" Click="GameButton_Click"  />
             <Button Content="Options" Click="OptionsButton_Click" />
             <Button Content="Credits" Click="CreditsButton_Click" />
             <Button Content="Exit" Click="ExitButton_Click" />
         </StackPanel>
-        
+
     </Grid>
 </Page>

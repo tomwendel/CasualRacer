@@ -18,7 +18,7 @@ namespace CasualRacer
         {
             InitializeComponent();
 
-            NavigationFrame.Navigate(new StartPage());
+            NavigationFrame.Navigate(new StartPage(true));
         }
 
         private void NavigationFrame_Navigating(object sender, NavigatingCancelEventArgs e)

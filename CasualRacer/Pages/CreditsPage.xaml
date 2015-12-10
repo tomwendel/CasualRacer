@@ -27,6 +27,6 @@
         <Label Content="Aline (http://www.alineimwunderland.de/)" Grid.Row="1" Grid.Column="1" />
         <Label Content="BAHI (http://opengameart.org/users/bahi)" Grid.Row="2" Grid.Column="1" />
         <Label Content="TRBRY (http://opengameart.org/users/trbry)" Grid.Row="3" Grid.Column="1" />
-        <Button Grid.Row="4" Grid.Column="2" HorizontalAlignment="Right" Content="Back" Click="Button_Click"  />
+        <Button Grid.Row="4" Grid.Column="2" HorizontalAlignment="Right" FontFamily="Wingdings" Content="ß" Click="Button_Click"  />
     </Grid>
 </Page>

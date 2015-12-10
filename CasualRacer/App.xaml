@@ -6,20 +6,41 @@
     <Application.Resources>
         <Style TargetType="Button">
             <Setter Property="FontSize" Value="20" />
-            <Setter Property="Background" Value="DarkGray" />
+            <Setter Property="Background" Value="#4D4D4B" />
+            <Setter Property="Foreground" Value="#FFFFFF" />
             <Setter Property="Margin" Value="5" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" Padding="10 5">
-                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
-                        </Border>
+                        <Grid Background="{TemplateBinding Background}" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="3"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="3"/>
+                            </Grid.RowDefinitions>
+                            <Rectangle Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Rectangle.Fill>
+                                    <ImageBrush  ImageSource="/CasualRacer;component/Assets/ButtonBorder.png" TileMode="Tile" Stretch="None" ViewboxUnits="Absolute" ViewportUnits="Absolute" Viewbox="0,0,18,3" Viewport="0,0,18,3"/>
+                                </Rectangle.Fill>
+                            </Rectangle>
+
+                            <Border Grid.Row="1" Padding="10 5">
+                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </Border>
+
+                            <Rectangle Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <Rectangle.Fill>
+                                    <ImageBrush  ImageSource="/CasualRacer;component/Assets/ButtonBorder.png" TileMode="Tile" Stretch="None" ViewboxUnits="Absolute" ViewportUnits="Absolute" Viewbox="0,0,18,3" Viewport="0,0,18,3"/>
+                                </Rectangle.Fill>
+                            </Rectangle>
+
+                        </Grid>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="Orange" />
+                    <Setter Property="Background" Value="#2B2B2A" />
                 </Trigger>
             </Style.Triggers>
         </Style>
