@@ -15,6 +15,11 @@ namespace CasualRacer.Model
         public const int CELLSIZE = 40;
 
         /// <summary>
+        /// Standard-Tile für Strassen und Rand.
+        /// </summary>
+        public const TrackTile DEFAULT_TILE = TrackTile.Dirt;
+
+        /// <summary>
         /// Ruft die Zellen ab.
         /// </summary>
         public TrackTile[,] Tiles { get; }
@@ -66,6 +71,17 @@ namespace CasualRacer.Model
             cellX = Math.Min(Tiles.GetLength(0) - 1, Math.Max(0, cellX));
             cellY = Math.Min(Tiles.GetLength(1) - 1, Math.Max(0, cellY));
             return Tiles[cellX, cellY];
+        }
+
+        public TrackTile GetTileByIndex(int x, int y)
+        {
+            if (x < 0 || 
+                y < 0 || 
+                x >= Tiles.GetLength(0) || 
+                y >= Tiles.GetLength(1))
+                return DEFAULT_TILE;
+
+            return Tiles[x, y];
         }
 
         /// <summary>
