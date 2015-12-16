@@ -112,8 +112,13 @@ namespace CasualRacer
                     switch (track.Tiles[x, y])
                     {
                         case TrackTile.Gras: DrawTile(drawingContext, TrackTile.Gras, x, y, grasTiles); break;
-                        case TrackTile.Road: DrawTile(drawingContext, TrackTile.Road, x, y, roadTiles); break;
                         case TrackTile.Sand: DrawTile(drawingContext, TrackTile.Sand, x, y, sandTiles); break;
+                    }
+
+                    // Road handling
+                    if (((int)track.Tiles[x,y] & 8) > 0)
+                    {
+                        DrawTile(drawingContext, TrackTile.Road, x, y, roadTiles);
                     }
                 }
             }
@@ -129,6 +134,18 @@ namespace CasualRacer
             bool upperRight = game.Track.GetTileByIndex(x + 1, y - 1) == type;
             bool lowerLeft = game.Track.GetTileByIndex(x - 1, y + 1) == type;
             bool lowerRight = game.Track.GetTileByIndex(x + 1, y + 1) == type;
+
+            if (type == TrackTile.Road)
+            {
+                left = ((int)game.Track.GetTileByIndex(x - 1, y) & 8) == 8;
+                upper = ((int)game.Track.GetTileByIndex(x, y - 1) & 8) == 8;
+                lower = ((int)game.Track.GetTileByIndex(x, y + 1) & 8) == 8;
+                right = ((int)game.Track.GetTileByIndex(x + 1, y) & 8) == 8;
+                upperLeft = ((int)game.Track.GetTileByIndex(x - 1, y - 1) & 8) == 8;
+                upperRight = ((int)game.Track.GetTileByIndex(x + 1, y - 1) & 8) == 8;
+                lowerLeft = ((int)game.Track.GetTileByIndex(x - 1, y + 1) & 8) == 8;
+                lowerRight = ((int)game.Track.GetTileByIndex(x + 1, y + 1) & 8) == 8;
+            }
 
             #region Upper Left
 

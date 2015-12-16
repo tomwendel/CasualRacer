@@ -19,7 +19,9 @@ namespace CasualRacer.Model
         {
             Track = Track.LoadFromTxt("./Tracks/Track1.txt");
 
-            Player1 = new Player();
+            Vector goal = Track.GetGoalPosition();
+
+            Player1 = new Player() { Position = (goal + new Vector(0.5f, 0.5f)) * Track.CELLSIZE };
 
         }
 
