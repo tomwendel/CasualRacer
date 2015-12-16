@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 
 using CasualRacer.Model;
 using System.Collections.Generic;
-using System.Windows.Threading;
+using System.IO;
 
 namespace CasualRacer
 {
@@ -23,13 +23,10 @@ namespace CasualRacer
         private readonly Stopwatch elapsedWatch = new Stopwatch();
 
         private readonly ImageBrush dirtBrush;
-        private readonly ImageBrush sandBrush;
-        private readonly ImageBrush grassBrush;
-        private readonly ImageBrush roadBrush;
-        private readonly ImageBrush tilesBrush;
 
-        private Dictionary<TileType, Rect> grasTiles = new Dictionary<TileType, Rect>();
-        private Dictionary<TileType, Rect> sandTiles = new Dictionary<TileType, Rect>();
+        private Dictionary<TileType, ImageBrush> grasTiles = new Dictionary<TileType, ImageBrush>();
+        private Dictionary<TileType, ImageBrush> sandTiles = new Dictionary<TileType, ImageBrush>();
+        private Dictionary<TileType, ImageBrush> roadTiles = new Dictionary<TileType, ImageBrush>();
 
         public GameControl()
         {
@@ -43,46 +40,61 @@ namespace CasualRacer
             Application.Current.MainWindow.KeyDown += MainWindow_KeyDown;
             Application.Current.MainWindow.KeyUp += MainWindow_KeyUp;
 
-            var path = System.IO.Path.Combine(Environment.CurrentDirectory, "Assets");
-            dirtBrush = new ImageBrush(new BitmapImage(new Uri(path + "\\dirt_center.png")));
-            sandBrush = new ImageBrush(new BitmapImage(new Uri(path + "\\sand_center.png")));
-            grassBrush = new ImageBrush(new BitmapImage(new Uri(path + "\\grass_center.png")));
-            roadBrush = new ImageBrush(new BitmapImage(new Uri(path + "\\asphalt_center.png")));
+            var path = Path.Combine(Environment.CurrentDirectory, "Assets");
 
-            tilesBrush = new ImageBrush(new BitmapImage(new Uri(path + "\\tiles.png")));
+            BitmapImage image = new BitmapImage(new Uri(path + "\\tiles.png"));
 
-            grasTiles.Add(TileType.Center, new Rect(910, 260, 128, 128));
-            grasTiles.Add(TileType.Left, new Rect(910, 1300, 128, 128));
-            grasTiles.Add(TileType.Right, new Rect(910, 1040, 128, 128));
-            grasTiles.Add(TileType.Upper, new Rect(910, 0, 128, 128));
-            grasTiles.Add(TileType.Lower, new Rect(910, 520, 128, 128));
-            grasTiles.Add(TileType.UpperLeftConcave, new Rect(910, 780, 128, 128));
-            grasTiles.Add(TileType.UpperRightConcave, new Rect(910, 910, 128, 128));
-            grasTiles.Add(TileType.LowerLeftConcave, new Rect(910, 1430, 128, 128));
-            grasTiles.Add(TileType.LowerRightConcave, new Rect(910, 1560, 128, 128));
-            grasTiles.Add(TileType.UpperLeftConvex, new Rect(910, 130, 128, 128));
-            grasTiles.Add(TileType.UpperRightConvex, new Rect(780, 1820, 128, 128));
-            grasTiles.Add(TileType.LowerLeftConvex, new Rect(910, 650, 128, 128));
-            grasTiles.Add(TileType.LowerRightConvex, new Rect(910, 390, 128, 128));
+            // Definition des zentralen Dirt-Brushes
+            dirtBrush = new ImageBrush(image);
+            dirtBrush.TileMode = TileMode.Tile;
+            dirtBrush.Viewbox = new Rect(1820, 0, 128, 128);
+            dirtBrush.ViewportUnits = BrushMappingMode.RelativeToBoundingBox;
+            dirtBrush.ViewboxUnits = BrushMappingMode.Absolute;
 
-            sandTiles.Add(TileType.Center, new Rect(780, 260, 128, 128));
-            sandTiles.Add(TileType.Left, new Rect(780, 1300, 128, 128));
-            sandTiles.Add(TileType.Right, new Rect(780, 1040, 128, 128));
-            sandTiles.Add(TileType.Upper, new Rect(780, 0, 128, 128));
-            sandTiles.Add(TileType.Lower, new Rect(780, 520, 128, 128));
-            sandTiles.Add(TileType.UpperLeftConcave, new Rect(780, 780, 128, 128));
-            sandTiles.Add(TileType.UpperRightConcave, new Rect(780, 910, 128, 128));
-            sandTiles.Add(TileType.LowerLeftConcave, new Rect(780, 1430, 128, 128));
-            sandTiles.Add(TileType.LowerRightConcave, new Rect(780, 1560, 128, 128));
-            sandTiles.Add(TileType.UpperLeftConvex, new Rect(780, 130, 128, 128));
-            sandTiles.Add(TileType.UpperRightConvex, new Rect(780, 1690, 128, 128));
-            sandTiles.Add(TileType.LowerLeftConvex, new Rect(780, 650, 128, 128));
-            sandTiles.Add(TileType.LowerRightConvex, new Rect(780, 390, 128, 128));
-        }
+            // Definition der Gras-Brushes
+            grasTiles.Add(TileType.Center, new ImageBrush(image) { Viewbox = new Rect(910, 260, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            grasTiles.Add(TileType.Left, new ImageBrush(image) { Viewbox = new Rect(910, 1300, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            grasTiles.Add(TileType.Right, new ImageBrush(image) { Viewbox = new Rect(910, 1040, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            grasTiles.Add(TileType.Upper, new ImageBrush(image) { Viewbox = new Rect(910, 0, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            grasTiles.Add(TileType.Lower, new ImageBrush(image) { Viewbox = new Rect(910, 520, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            grasTiles.Add(TileType.UpperLeftConcave, new ImageBrush(image) { Viewbox = new Rect(910, 780, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            grasTiles.Add(TileType.UpperRightConcave, new ImageBrush(image) { Viewbox = new Rect(910, 910, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            grasTiles.Add(TileType.LowerLeftConcave, new ImageBrush(image) { Viewbox = new Rect(910, 1430, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            grasTiles.Add(TileType.LowerRightConcave, new ImageBrush(image) { Viewbox = new Rect(910, 1560, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            grasTiles.Add(TileType.UpperLeftConvex, new ImageBrush(image) { Viewbox = new Rect(910, 130, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            grasTiles.Add(TileType.UpperRightConvex, new ImageBrush(image) { Viewbox = new Rect(780, 1820, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            grasTiles.Add(TileType.LowerLeftConvex, new ImageBrush(image) { Viewbox = new Rect(910, 650, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            grasTiles.Add(TileType.LowerRightConvex, new ImageBrush(image) { Viewbox = new Rect(910, 390, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
 
-        private void X_Tick(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
+            // Definition der Sand-Brushes
+            sandTiles.Add(TileType.Center, new ImageBrush(image) { Viewbox = new Rect(780, 260, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            sandTiles.Add(TileType.Left, new ImageBrush(image) { Viewbox = new Rect(780, 1300, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            sandTiles.Add(TileType.Right, new ImageBrush(image) { Viewbox = new Rect(780, 1040, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            sandTiles.Add(TileType.Upper, new ImageBrush(image) { Viewbox = new Rect(780, 0, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            sandTiles.Add(TileType.Lower, new ImageBrush(image) { Viewbox = new Rect(780, 520, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            sandTiles.Add(TileType.UpperLeftConcave, new ImageBrush(image) { Viewbox = new Rect(780, 780, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            sandTiles.Add(TileType.UpperRightConcave, new ImageBrush(image) { Viewbox = new Rect(780, 910, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            sandTiles.Add(TileType.LowerLeftConcave, new ImageBrush(image) { Viewbox = new Rect(780, 1430, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            sandTiles.Add(TileType.LowerRightConcave, new ImageBrush(image) { Viewbox = new Rect(780, 1560, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            sandTiles.Add(TileType.UpperLeftConvex, new ImageBrush(image) { Viewbox = new Rect(780, 130, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            sandTiles.Add(TileType.UpperRightConvex, new ImageBrush(image) { Viewbox = new Rect(780, 1690, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            sandTiles.Add(TileType.LowerLeftConvex, new ImageBrush(image) { Viewbox = new Rect(780, 650, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            sandTiles.Add(TileType.LowerRightConvex, new ImageBrush(image) { Viewbox = new Rect(780, 390, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+
+            // Definition der Road-Brushes
+            roadTiles.Add(TileType.Center, new ImageBrush(image) { Viewbox = new Rect(2470, 650, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            roadTiles.Add(TileType.Left, new ImageBrush(image) { Viewbox = new Rect(2470, 780, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            roadTiles.Add(TileType.Right, new ImageBrush(image) { Viewbox = new Rect(2470, 520, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            roadTiles.Add(TileType.Upper, new ImageBrush(image) { Viewbox = new Rect(2600, 1040, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            roadTiles.Add(TileType.Lower, new ImageBrush(image) { Viewbox = new Rect(2340, 260, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            roadTiles.Add(TileType.UpperLeftConcave, new ImageBrush(image) { Viewbox = new Rect(2210, 1430, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            roadTiles.Add(TileType.UpperRightConcave, new ImageBrush(image) { Viewbox = new Rect(2210, 1560, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            roadTiles.Add(TileType.LowerLeftConcave, new ImageBrush(image) { Viewbox = new Rect(2340, 1820, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            roadTiles.Add(TileType.LowerRightConcave, new ImageBrush(image) { Viewbox = new Rect(2470, 0, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            roadTiles.Add(TileType.UpperLeftConvex, new ImageBrush(image) { Viewbox = new Rect(2600, 780, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            roadTiles.Add(TileType.UpperRightConvex, new ImageBrush(image) { Viewbox = new Rect(2600, 650, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            roadTiles.Add(TileType.LowerLeftConvex, new ImageBrush(image) { Viewbox = new Rect(2470, 390, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+            roadTiles.Add(TileType.LowerRightConvex, new ImageBrush(image) { Viewbox = new Rect(2470, 260, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -90,19 +102,8 @@ namespace CasualRacer
             base.OnRender(drawingContext);
 
             var track = game.Track;
-
-            tilesBrush.TileMode = TileMode.Tile;
-            tilesBrush.Viewport = new Rect(0, 0, 0.5f / track.Tiles.GetLength(0), 0.5f / track.Tiles.GetLength(1));
-            tilesBrush.ViewportUnits = BrushMappingMode.RelativeToBoundingBox;
-
-            tilesBrush.Viewbox = new Rect(1820, 0, 128, 128);
-            tilesBrush.ViewboxUnits = BrushMappingMode.Absolute;
-            drawingContext.DrawRectangle(tilesBrush, null, new Rect(0, 0, Track.CELLSIZE * track.Tiles.GetLength(0), Track.CELLSIZE * track.Tiles.GetLength(1)));
-
-            tilesBrush.TileMode = TileMode.None;
-            tilesBrush.Viewport = new Rect(0, 0, 1f, 1f);
-            tilesBrush.ViewportUnits = BrushMappingMode.RelativeToBoundingBox;
-            tilesBrush.ViewboxUnits = BrushMappingMode.Absolute;
+            dirtBrush.Viewport = new Rect(0, 0, 0.5f / track.Tiles.GetLength(0), 0.5f / track.Tiles.GetLength(1));
+            drawingContext.DrawRectangle(dirtBrush, null, new Rect(0, 0, Track.CELLSIZE * track.Tiles.GetLength(0), Track.CELLSIZE * track.Tiles.GetLength(1)));
 
             for (var x = 0; x < track.Tiles.GetLength(0); x++)
             {
@@ -110,20 +111,15 @@ namespace CasualRacer
                 {
                     switch (track.Tiles[x, y])
                     {
-                        case TrackTile.Gras:
-                            DrawTile(drawingContext, TrackTile.Gras, x, y, grasTiles);
-                            break;
-                        case TrackTile.Road:
-                            break;
-                        case TrackTile.Sand:
-                            DrawTile(drawingContext, TrackTile.Sand, x, y, sandTiles);
-                            break;
+                        case TrackTile.Gras: DrawTile(drawingContext, TrackTile.Gras, x, y, grasTiles); break;
+                        case TrackTile.Road: DrawTile(drawingContext, TrackTile.Road, x, y, roadTiles); break;
+                        case TrackTile.Sand: DrawTile(drawingContext, TrackTile.Sand, x, y, sandTiles); break;
                     }
                 }
             }
         }
 
-        private void DrawTile(DrawingContext context, TrackTile type, int x, int y, Dictionary<TileType, Rect> mapping)
+        private void DrawTile(DrawingContext context, TrackTile type, int x, int y, Dictionary<TileType, ImageBrush> mapping)
         {
             bool left = game.Track.GetTileByIndex(x - 1, y) == type;
             bool upper = game.Track.GetTileByIndex(x, y - 1) == type;
@@ -136,7 +132,7 @@ namespace CasualRacer
 
             #region Upper Left
 
-            Rect cell00 = mapping[TileType.Center];
+            ImageBrush cell00 = mapping[TileType.Center];
             if (!left)
             {
                 if (!upper)
@@ -164,9 +160,109 @@ namespace CasualRacer
                 }
             }
 
-            tilesBrush.Viewbox = cell00;
+            context.DrawRectangle(cell00, null, new Rect(x * Track.CELLSIZE, y * Track.CELLSIZE, Track.CELLSIZE / 2, Track.CELLSIZE / 2));
 
-            context.DrawRectangle(tilesBrush, null, new Rect(x * Track.CELLSIZE, y * Track.CELLSIZE, Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+            #endregion
+
+            #region Upper Right
+
+            ImageBrush cell10 = mapping[TileType.Center];
+            if (!right)
+            {
+                if (!upper)
+                {
+                    // konvexe linke ecke
+                    cell10 = mapping[TileType.UpperRightConvex];
+                }
+                else
+                {
+                    // linke kante
+                    cell10 = mapping[TileType.Right];
+                }
+            }
+            else
+            {
+                if (!upper)
+                {
+                    // obere Kante
+                    cell10 = mapping[TileType.Upper];
+                }
+                else if (!upperRight)
+                {
+                    // linke konkave Ecke
+                    cell10 = mapping[TileType.UpperRightConcave];
+                }
+            }
+
+            context.DrawRectangle(cell10, null, new Rect((x * Track.CELLSIZE) + (Track.CELLSIZE / 2), y * Track.CELLSIZE, Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+
+            #endregion
+
+            #region Lower Right
+
+            ImageBrush cell11 = mapping[TileType.Center];
+            if (!right)
+            {
+                if (!lower)
+                {
+                    // konvexe linke ecke
+                    cell11 = mapping[TileType.LowerRightConvex];
+                }
+                else
+                {
+                    // linke kante
+                    cell11 = mapping[TileType.Right];
+                }
+            }
+            else
+            {
+                if (!lower)
+                {
+                    // obere Kante
+                    cell11 = mapping[TileType.Lower];
+                }
+                else if (!lowerRight)
+                {
+                    // linke konkave Ecke
+                    cell11 = mapping[TileType.LowerRightConcave];
+                }
+            }
+
+            context.DrawRectangle(cell11, null, new Rect((x * Track.CELLSIZE) + (Track.CELLSIZE / 2), (y * Track.CELLSIZE) + (Track.CELLSIZE / 2), Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+
+            #endregion
+
+            #region Lower Left
+
+            ImageBrush cell01 = mapping[TileType.Center];
+            if (!left)
+            {
+                if (!lower)
+                {
+                    // konvexe linke ecke
+                    cell01 = mapping[TileType.LowerLeftConvex];
+                }
+                else
+                {
+                    // linke kante
+                    cell01 = mapping[TileType.Left];
+                }
+            }
+            else
+            {
+                if (!lower)
+                {
+                    // obere Kante
+                    cell01 = mapping[TileType.Lower];
+                }
+                else if (!lowerLeft)
+                {
+                    // linke konkave Ecke
+                    cell01 = mapping[TileType.LowerLeftConcave];
+                }
+            }
+
+            context.DrawRectangle(cell01, null, new Rect(x * Track.CELLSIZE, (y * Track.CELLSIZE) + (Track.CELLSIZE / 2), Track.CELLSIZE / 2, Track.CELLSIZE / 2));
 
             #endregion
         }
