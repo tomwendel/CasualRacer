@@ -24,6 +24,15 @@ namespace CasualRacer
 
         private readonly ImageBrush dirtBrush;
 
+        private ImageBrush goalHorizontalTop;
+        private ImageBrush goalHorizontalBottom;
+        private ImageBrush goalVerticalLeft;
+        private ImageBrush goalVerticalRight;
+        private ImageBrush startPositionUp;
+        private ImageBrush startPositionDown;
+        private ImageBrush startPositionLeft;
+        private ImageBrush startPositionRight;
+
         private Dictionary<TileType, ImageBrush> grasTiles = new Dictionary<TileType, ImageBrush>();
         private Dictionary<TileType, ImageBrush> sandTiles = new Dictionary<TileType, ImageBrush>();
         private Dictionary<TileType, ImageBrush> roadTiles = new Dictionary<TileType, ImageBrush>();
@@ -95,6 +104,16 @@ namespace CasualRacer
             roadTiles.Add(TileType.UpperRightConvex, new ImageBrush(image) { Viewbox = new Rect(2600, 650, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
             roadTiles.Add(TileType.LowerLeftConvex, new ImageBrush(image) { Viewbox = new Rect(2470, 390, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
             roadTiles.Add(TileType.LowerRightConvex, new ImageBrush(image) { Viewbox = new Rect(2470, 260, 128, 128), ViewboxUnits = BrushMappingMode.Absolute });
+
+            // Goal Brushes
+            goalHorizontalBottom = new ImageBrush(image) { Viewbox = new Rect(1820, 1690, 128, 128), ViewboxUnits = BrushMappingMode.Absolute };
+            goalHorizontalTop = new ImageBrush(image) { Viewbox = new Rect(1950, 0, 128, 128), ViewboxUnits = BrushMappingMode.Absolute };
+            goalVerticalLeft = new ImageBrush(image) { Viewbox = new Rect(2080, 390, 128, 128), ViewboxUnits = BrushMappingMode.Absolute };
+            goalVerticalRight = new ImageBrush(image) { Viewbox = new Rect(2080, 130, 128, 128), ViewboxUnits = BrushMappingMode.Absolute };
+            startPositionDown = new ImageBrush(image) { Viewbox = new Rect(1950, 260, 128, 128), ViewboxUnits = BrushMappingMode.Absolute };
+            startPositionLeft = new ImageBrush(image) { Viewbox = new Rect(1950, 130, 128, 128), ViewboxUnits = BrushMappingMode.Absolute };
+            startPositionRight = new ImageBrush(image) { Viewbox = new Rect(1950, 390, 128, 128), ViewboxUnits = BrushMappingMode.Absolute };
+            startPositionUp = new ImageBrush(image) { Viewbox = new Rect(1950, 520, 128, 128), ViewboxUnits = BrushMappingMode.Absolute };
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -113,12 +132,111 @@ namespace CasualRacer
                     {
                         case TrackTile.Gras: DrawTile(drawingContext, TrackTile.Gras, x, y, grasTiles); break;
                         case TrackTile.Sand: DrawTile(drawingContext, TrackTile.Sand, x, y, sandTiles); break;
-                    }
-
-                    // Road handling
-                    if (((int)track.Tiles[x,y] & 8) > 0)
-                    {
-                        DrawTile(drawingContext, TrackTile.Road, x, y, roadTiles);
+                        case TrackTile.Road: DrawTile(drawingContext, TrackTile.Road, x, y, roadTiles); break;
+                        case TrackTile.GoalDown:
+                            drawingContext.DrawRectangle(goalVerticalLeft, null, new Rect(
+                                (x * Track.CELLSIZE),
+                                (y * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(goalVerticalRight, null, new Rect(
+                                (x * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                (y * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(roadTiles[TileType.Left], null, new Rect(
+                                (x * Track.CELLSIZE),
+                                (y * Track.CELLSIZE),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(roadTiles[TileType.Right], null, new Rect(
+                                (x * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                (y * Track.CELLSIZE),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(startPositionDown, null, new Rect(
+                                (x * Track.CELLSIZE),
+                                (y * Track.CELLSIZE),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(startPositionDown, null, new Rect(
+                                (x * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                (y * Track.CELLSIZE),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            break;
+                        case TrackTile.GoalLeft:
+                            drawingContext.DrawRectangle(goalHorizontalTop, null, new Rect(
+                                (x * Track.CELLSIZE),
+                                (y * Track.CELLSIZE),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(goalHorizontalBottom, null, new Rect(
+                                (x * Track.CELLSIZE),
+                                (y * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(roadTiles[TileType.Upper], null, new Rect(
+                                (x * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                (y * Track.CELLSIZE),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(roadTiles[TileType.Lower], null, new Rect(
+                                (x * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                (y * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(startPositionLeft, null, new Rect(
+                                (x * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                (y * Track.CELLSIZE),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(startPositionLeft, null, new Rect(
+                                (x * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                (y * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            break;
+                        case TrackTile.GoalRight:
+                            drawingContext.DrawRectangle(goalHorizontalTop, null, new Rect(
+                                (x * Track.CELLSIZE) + (Track.CELLSIZE / 2), 
+                                (y * Track.CELLSIZE), 
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(goalHorizontalBottom, null, new Rect(
+                                (x * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                (y * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(roadTiles[TileType.Upper], null, new Rect(
+                                (x * Track.CELLSIZE),
+                                (y * Track.CELLSIZE),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(roadTiles[TileType.Lower], null, new Rect(
+                                (x * Track.CELLSIZE),
+                                (y * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(startPositionRight, null, new Rect(
+                                (x * Track.CELLSIZE),
+                                (y * Track.CELLSIZE),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(startPositionRight, null, new Rect(
+                                (x * Track.CELLSIZE),
+                                (y * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            break;
+                        case TrackTile.GoalUp:
+                            drawingContext.DrawRectangle(goalVerticalLeft, null, new Rect(
+                                (x * Track.CELLSIZE),
+                                (y * Track.CELLSIZE),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(goalVerticalRight, null, new Rect(
+                                (x * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                (y * Track.CELLSIZE),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(roadTiles[TileType.Left], null, new Rect(
+                                (x * Track.CELLSIZE),
+                                (y * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(roadTiles[TileType.Right], null, new Rect(
+                                (x * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                (y * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(startPositionUp, null, new Rect(
+                                (x * Track.CELLSIZE),
+                                (y * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            drawingContext.DrawRectangle(startPositionUp, null, new Rect(
+                                (x * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                (y * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                Track.CELLSIZE / 2, Track.CELLSIZE / 2));
+                            break;
                     }
                 }
             }

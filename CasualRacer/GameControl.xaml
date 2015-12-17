@@ -9,6 +9,7 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
     <Canvas>
+        <TextBlock Text="{Binding Path=Player1.Round}" Canvas.Left="200" />
         <Image Canvas.Left="-10"
                 Canvas.Top="-10"
                 Width="20"

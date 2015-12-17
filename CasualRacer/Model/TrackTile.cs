@@ -2,15 +2,15 @@
 {
     internal enum TrackTile
     {
-        Dirt = 0,
-        Sand = 1,
-        Gras = 2,
+        Dirt = 0x0,
+        Sand = 0x1,
+        Gras = 0x2,
 
-        Road = 8,
-        GoalUp = 12,
-        GoalDown = 13,
-        GoalLeft = 14,
-        GoalRight = 15,
+        Road = 0x8,
+        GoalUp = 0xC,
+        GoalDown = 0xD,
+        GoalLeft = 0xE,
+        GoalRight = 0xF,
     }
 
     // 0000

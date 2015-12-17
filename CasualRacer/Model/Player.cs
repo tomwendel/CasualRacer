@@ -9,7 +9,11 @@ namespace CasualRacer.Model
 
         private float velocity = 0f;
 
+        private int round = 0;
+
         private Vector position = new Vector();
+
+        private GoalFlags goalFlag = GoalFlags.None;
 
         /// <summary>
         /// Ruft die Richtung ab oder setzt diese.
@@ -70,6 +74,43 @@ namespace CasualRacer.Model
         public bool Break { get; set; }
 
         /// <summary>
+        /// Gibt die aktuelle Runde an.
+        /// </summary>
+        public int Round
+        {
+            get { return round; }
+            set
+            {
+                if (round != value)
+                {
+                    round = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Round)));
+                }
+            }
+        }
+
+        public GoalFlags GoalFlag
+        {
+            get { return goalFlag; }
+            set
+            {
+                if (goalFlag != value)
+                {
+                    // Nächste Runde
+                    if (goalFlag == GoalFlags.BeforeGoal && value == GoalFlags.AfterGoal)
+                        Round++;
+
+                    // Runde zurück
+                    if (goalFlag == GoalFlags.AfterGoal && value == GoalFlags.BeforeGoal)
+                        Round--;
+
+                    goalFlag = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GoalFlag)));
+                }
+            }
+        }
+
+        /// <summary>
         /// Ruft ab, ob der Spieler nach links lenkt.
         /// </summary>
         public bool WheelLeft { get; set; }
@@ -80,5 +121,12 @@ namespace CasualRacer.Model
         public bool WheelRight { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+    }
+
+    public enum GoalFlags
+    {
+        None,
+        BeforeGoal,
+        AfterGoal,
     }
 }
