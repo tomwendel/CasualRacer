@@ -1,4 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 
 namespace CasualRacer.Model
@@ -11,9 +14,17 @@ namespace CasualRacer.Model
 
         private int round = 0;
 
+        private int messuredRound = 1;
+
         private Vector position = new Vector();
 
         private GoalFlags goalFlag = GoalFlags.None;
+
+        private TimeSpan roundTime;
+
+        private TimeSpan totalTime;
+
+        private ObservableCollection<TimeSpan> roundTimes = new ObservableCollection<TimeSpan>();
 
         /// <summary>
         /// Ruft die Richtung ab oder setzt diese.
@@ -98,7 +109,15 @@ namespace CasualRacer.Model
                 {
                     // Nächste Runde
                     if (goalFlag == GoalFlags.BeforeGoal && value == GoalFlags.AfterGoal)
+                    {
+                        if (Round == MessuredRound)
+                        {
+                            roundTimes.Add(RoundTime);
+                            RoundTime = new TimeSpan();
+                            MessuredRound++;
+                        }
                         Round++;
+                    }
 
                     // Runde zurück
                     if (goalFlag == GoalFlags.AfterGoal && value == GoalFlags.BeforeGoal)
@@ -108,6 +127,50 @@ namespace CasualRacer.Model
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GoalFlag)));
                 }
             }
+        }
+
+        public TimeSpan TotalTime
+        {
+            get { return totalTime; }
+            set
+            {
+                if (totalTime != value)
+                {
+                    totalTime = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TotalTime)));
+                }
+            }
+        }
+
+        public TimeSpan RoundTime
+        {
+            get { return roundTime; }
+            set
+            {
+                if (roundTime != value)
+                {
+                    roundTime = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RoundTime)));
+                }
+            }
+        }
+
+        public int MessuredRound
+        {
+            get { return messuredRound; }
+            set
+            {
+                if (messuredRound != value)
+                {
+                    messuredRound = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MessuredRound)));
+                }
+            }
+        }
+
+        public ObservableCollection<TimeSpan> RoundTimes
+        {
+            get { return roundTimes; }
         }
 
         /// <summary>

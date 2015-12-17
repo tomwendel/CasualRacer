@@ -11,6 +11,13 @@ namespace CasualRacer.Model
         public Track Track { get; }
 
         /// <summary>
+        /// Gibt den aktuellen <see cref="GameState"/> zurück.
+        /// </summary>
+        public GameState State { get; private set; }
+
+        public TimeSpan CountDown { get; private set; }
+
+        /// <summary>
         /// Ruft den <see cref="Player"/> 1 ab.
         /// </summary>
         public Player Player1 { get; }
@@ -22,6 +29,9 @@ namespace CasualRacer.Model
 
         public Game()
         {
+            State = GameState.CountDown;
+            CountDown = TimeSpan.FromSeconds(3);
+
             Track = Track.LoadFromTxt("./Tracks/Track1.txt");
 
             Vector goal = Track.GetGoalPosition();
@@ -63,7 +73,22 @@ namespace CasualRacer.Model
         /// <param name="elapsedTime">Die abgelaufene Zeit seit dem letzten Update.</param>
         public void Update(TimeSpan totalTime, TimeSpan elapsedTime)
         {
-            UpdatePlayer(totalTime, elapsedTime, Player1);
+            switch (State)
+            {
+                case GameState.CountDown:
+                    CountDown -= elapsedTime;
+                    if (CountDown < TimeSpan.Zero)
+                    {
+                        CountDown = TimeSpan.Zero;
+                        State = GameState.Race;
+                    }
+                    break;
+                case GameState.Race:
+                    UpdatePlayer(totalTime, elapsedTime, Player1);
+                    if (Player1.Round == 5)
+                        State = GameState.Finished;
+                    break;
+            }
         }
 
         /// <summary>
@@ -74,6 +99,9 @@ namespace CasualRacer.Model
         /// <param name="player">Der Spieler.</param>
         private void UpdatePlayer(TimeSpan totalTime, TimeSpan elapsedTime, Player player)
         {
+            player.TotalTime += elapsedTime;
+            player.RoundTime += elapsedTime;
+
             // Lenkung
             if (player.WheelLeft)
                 player.Direction -= (float)elapsedTime.TotalSeconds * 100;
@@ -134,6 +162,13 @@ namespace CasualRacer.Model
             {
                 player.GoalFlag = GoalFlags.None;
             }
+        }
+
+        public enum GameState
+        {
+            CountDown,
+            Race,
+            Finished
         }
     }
 }
