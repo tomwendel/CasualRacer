@@ -5,11 +5,11 @@ namespace CasualRacer.Model
 {
     internal class Player : INotifyPropertyChanged
     {
-        private float direction = 0f;
+        private float direction = 90f;
 
         private float velocity = 0f;
 
-        private Vector position = new Vector();
+        private Vector position = new Vector(364, 134);
 
         /// <summary>
         /// Ruft die Richtung ab oder setzt diese.

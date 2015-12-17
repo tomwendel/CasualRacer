@@ -10,7 +10,7 @@
       Title="GamePage">
 
     <Grid>
-        <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click" />
+        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click" FontFamily="Wingdings" Content="ß" />
         <CasualRacer:GameControl  Margin="20 50 20 20" />
     </Grid>
 </Page>
