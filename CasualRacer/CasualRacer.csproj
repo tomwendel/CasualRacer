@@ -138,6 +138,7 @@
     <Resource Include="Copyright.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\ButtonBorder.png" />
     <Content Include="Assets\car_red.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
