@@ -8,7 +8,7 @@ namespace CasualRacer.Model
 {
     internal class Player : INotifyPropertyChanged
     {
-        private float direction = 0f;
+        private float direction = 90f;
 
         private float velocity = 0f;
 

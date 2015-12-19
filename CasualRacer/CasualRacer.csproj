@@ -141,6 +141,9 @@
     <Content Include="Assets\car_red.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Assets\LogoBottom.png" />
+    <Resource Include="Assets\LogoCars.png" />
+    <Resource Include="Assets\LogoTop.png" />
     <Content Include="Assets\tiles.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
