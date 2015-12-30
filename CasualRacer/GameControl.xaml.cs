@@ -187,8 +187,8 @@ namespace CasualRacer
                             break;
                         case TrackTile.GoalRight:
                             drawingContext.DrawRectangle(goalHorizontalTop, null, new Rect(
-                                (x * Track.CELLSIZE) + (Track.CELLSIZE / 2), 
-                                (y * Track.CELLSIZE), 
+                                (x * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                (y * Track.CELLSIZE),
                                 Track.CELLSIZE / 2, Track.CELLSIZE / 2));
                             drawingContext.DrawRectangle(goalHorizontalBottom, null, new Rect(
                                 (x * Track.CELLSIZE) + (Track.CELLSIZE / 2),
@@ -255,14 +255,14 @@ namespace CasualRacer
 
             if (type == TrackTile.Road)
             {
-                left = ((int)game.Track.GetTileByIndex(x - 1, y) & 8) == 8;
-                upper = ((int)game.Track.GetTileByIndex(x, y - 1) & 8) == 8;
-                lower = ((int)game.Track.GetTileByIndex(x, y + 1) & 8) == 8;
-                right = ((int)game.Track.GetTileByIndex(x + 1, y) & 8) == 8;
-                upperLeft = ((int)game.Track.GetTileByIndex(x - 1, y - 1) & 8) == 8;
-                upperRight = ((int)game.Track.GetTileByIndex(x + 1, y - 1) & 8) == 8;
-                lowerLeft = ((int)game.Track.GetTileByIndex(x - 1, y + 1) & 8) == 8;
-                lowerRight = ((int)game.Track.GetTileByIndex(x + 1, y + 1) & 8) == 8;
+                left = game.Track.GetTileByIndex(x - 1, y).HasFlag(TrackTile.Road);
+                upper = game.Track.GetTileByIndex(x, y - 1).HasFlag(TrackTile.Road);
+                lower = game.Track.GetTileByIndex(x, y + 1).HasFlag(TrackTile.Road);
+                right = game.Track.GetTileByIndex(x + 1, y).HasFlag(TrackTile.Road);
+                upperLeft = game.Track.GetTileByIndex(x - 1, y - 1).HasFlag(TrackTile.Road);
+                upperRight = game.Track.GetTileByIndex(x + 1, y - 1).HasFlag(TrackTile.Road);
+                lowerLeft = game.Track.GetTileByIndex(x - 1, y + 1).HasFlag(TrackTile.Road);
+                lowerRight = game.Track.GetTileByIndex(x + 1, y + 1).HasFlag(TrackTile.Road);
             }
 
             #region Upper Left

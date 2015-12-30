@@ -47,7 +47,7 @@ namespace CasualRacer.Model
             var tile = GetTileByPosition(position);
 
             var speed = 0.0f;
-            if (((int)tile & 8) > 0)
+            if (tile.HasFlag(TrackTile.Road))
             {
                 speed = 1f;
             }
@@ -82,9 +82,9 @@ namespace CasualRacer.Model
 
         public TrackTile GetTileByIndex(int x, int y)
         {
-            if (x < 0 || 
-                y < 0 || 
-                x >= Tiles.GetLength(0) || 
+            if (x < 0 ||
+                y < 0 ||
+                x >= Tiles.GetLength(0) ||
                 y >= Tiles.GetLength(1))
                 return DEFAULT_TILE;
 
