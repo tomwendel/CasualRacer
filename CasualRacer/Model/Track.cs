@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,11 @@ namespace CasualRacer.Model
         /// Die Seitenlänge der Zellen.
         /// </summary>
         public const int CELLSIZE = 40;
+
+        /// <summary>
+        /// Standard-Tile für Strassen und Rand.
+        /// </summary>
+        public const TrackTile DEFAULT_TILE = TrackTile.Dirt;
 
         /// <summary>
         /// Ruft die Zellen ab.
@@ -41,12 +47,18 @@ namespace CasualRacer.Model
             var tile = GetTileByPosition(position);
 
             var speed = 0.0f;
-            switch (tile)
+            if (((int)tile & 8) > 0)
             {
-                case TrackTile.Dirt: speed = 0.2f; break;
-                case TrackTile.Gras: speed = 0.8f; break;
-                case TrackTile.Road: speed = 1f; break;
-                case TrackTile.Sand: speed = 0.4f; break;
+                speed = 1f;
+            }
+            else
+            {
+                switch (tile)
+                {
+                    case TrackTile.Dirt: speed = 0.2f; break;
+                    case TrackTile.Gras: speed = 0.8f; break;
+                    case TrackTile.Sand: speed = 0.4f; break;
+                }
             }
 
             return speed;
@@ -66,6 +78,34 @@ namespace CasualRacer.Model
             cellX = Math.Min(Tiles.GetLength(0) - 1, Math.Max(0, cellX));
             cellY = Math.Min(Tiles.GetLength(1) - 1, Math.Max(0, cellY));
             return Tiles[cellX, cellY];
+        }
+
+        public TrackTile GetTileByIndex(int x, int y)
+        {
+            if (x < 0 || 
+                y < 0 || 
+                x >= Tiles.GetLength(0) || 
+                y >= Tiles.GetLength(1))
+                return DEFAULT_TILE;
+
+            return Tiles[x, y];
+        }
+
+        public Vector GetGoalPosition()
+        {
+            for (int y = 0; y < Tiles.GetLength(1); y++)
+            {
+                for (int x = 0; x < Tiles.GetLength(0); x++)
+                {
+                    if (Tiles[x, y] == TrackTile.GoalDown ||
+                        Tiles[x, y] == TrackTile.GoalLeft ||
+                        Tiles[x, y] == TrackTile.GoalRight ||
+                        Tiles[x, y] == TrackTile.GoalUp)
+                        return new Vector(x, y);
+                }
+            }
+
+            throw new Exception("No Goal found");
         }
 
         /// <summary>
@@ -125,6 +165,8 @@ namespace CasualRacer.Model
                 }
                 while ((line = streamReader.ReadLine()) != null);
 
+                // TODO: Prüfen, ob es ein Goal gibt
+
                 return BuildTrack(tilesPerLine, allTiles);
             }
         }
@@ -156,7 +198,7 @@ namespace CasualRacer.Model
                 var tileTypeAsString = line.Substring(x, 1);
                 int tileTypeAsInt;
 
-                if (!int.TryParse(tileTypeAsString, out tileTypeAsInt) || !Enum.IsDefined(typeof(TrackTile), tileTypeAsInt))
+                if (!int.TryParse(tileTypeAsString, NumberStyles.HexNumber, CultureInfo.CurrentCulture.NumberFormat, out tileTypeAsInt) || !Enum.IsDefined(typeof(TrackTile), tileTypeAsInt))
                 {
                     throw new FormatException($"Line {lineNumber} contains a not supported tile identifier {tileTypeAsString}.");
                 }
