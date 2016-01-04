@@ -1,8 +1,5 @@
-﻿using System;
-
 namespace CasualRacer.Model
 {
-    [Flags]
     internal enum TrackTile
     {
         Dirt = 0x0,
