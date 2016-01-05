@@ -244,14 +244,14 @@ namespace CasualRacer
 
         private void DrawTile(DrawingContext context, TrackTile type, int x, int y, Dictionary<TileType, ImageBrush> mapping)
         {
-            bool left = game.Track.GetTileByIndex(x - 1, y) == type;
-            bool upper = game.Track.GetTileByIndex(x, y - 1) == type;
-            bool lower = game.Track.GetTileByIndex(x, y + 1) == type;
-            bool right = game.Track.GetTileByIndex(x + 1, y) == type;
-            bool upperLeft = game.Track.GetTileByIndex(x - 1, y - 1) == type;
-            bool upperRight = game.Track.GetTileByIndex(x + 1, y - 1) == type;
-            bool lowerLeft = game.Track.GetTileByIndex(x - 1, y + 1) == type;
-            bool lowerRight = game.Track.GetTileByIndex(x + 1, y + 1) == type;
+            bool left;
+            bool upper;
+            bool lower;
+            bool right;
+            bool upperLeft;
+            bool upperRight;
+            bool lowerLeft;
+            bool lowerRight;
 
             if (type == TrackTile.Road)
             {
@@ -263,6 +263,17 @@ namespace CasualRacer
                 upperRight = game.Track.GetTileByIndex(x + 1, y - 1).HasFlag(TrackTile.Road);
                 lowerLeft = game.Track.GetTileByIndex(x - 1, y + 1).HasFlag(TrackTile.Road);
                 lowerRight = game.Track.GetTileByIndex(x + 1, y + 1).HasFlag(TrackTile.Road);
+            }
+            else
+            {
+                left = game.Track.GetTileByIndex(x - 1, y) == type;
+                upper = game.Track.GetTileByIndex(x, y - 1) == type;
+                lower = game.Track.GetTileByIndex(x, y + 1) == type;
+                right = game.Track.GetTileByIndex(x + 1, y) == type;
+                upperLeft = game.Track.GetTileByIndex(x - 1, y - 1) == type;
+                upperRight = game.Track.GetTileByIndex(x + 1, y - 1) == type;
+                lowerLeft = game.Track.GetTileByIndex(x - 1, y + 1) == type;
+                lowerRight = game.Track.GetTileByIndex(x + 1, y + 1) == type;
             }
 
             #region Upper Left
