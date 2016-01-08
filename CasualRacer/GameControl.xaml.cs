@@ -187,8 +187,8 @@ namespace CasualRacer
                             break;
                         case TrackTile.GoalRight:
                             drawingContext.DrawRectangle(goalHorizontalTop, null, new Rect(
-                                (x * Track.CELLSIZE) + (Track.CELLSIZE / 2), 
-                                (y * Track.CELLSIZE), 
+                                (x * Track.CELLSIZE) + (Track.CELLSIZE / 2),
+                                (y * Track.CELLSIZE),
                                 Track.CELLSIZE / 2, Track.CELLSIZE / 2));
                             drawingContext.DrawRectangle(goalHorizontalBottom, null, new Rect(
                                 (x * Track.CELLSIZE) + (Track.CELLSIZE / 2),
@@ -244,25 +244,36 @@ namespace CasualRacer
 
         private void DrawTile(DrawingContext context, TrackTile type, int x, int y, Dictionary<TileType, ImageBrush> mapping)
         {
-            bool left = game.Track.GetTileByIndex(x - 1, y) == type;
-            bool upper = game.Track.GetTileByIndex(x, y - 1) == type;
-            bool lower = game.Track.GetTileByIndex(x, y + 1) == type;
-            bool right = game.Track.GetTileByIndex(x + 1, y) == type;
-            bool upperLeft = game.Track.GetTileByIndex(x - 1, y - 1) == type;
-            bool upperRight = game.Track.GetTileByIndex(x + 1, y - 1) == type;
-            bool lowerLeft = game.Track.GetTileByIndex(x - 1, y + 1) == type;
-            bool lowerRight = game.Track.GetTileByIndex(x + 1, y + 1) == type;
+            bool left;
+            bool upper;
+            bool lower;
+            bool right;
+            bool upperLeft;
+            bool upperRight;
+            bool lowerLeft;
+            bool lowerRight;
 
             if (type == TrackTile.Road)
             {
-                left = ((int)game.Track.GetTileByIndex(x - 1, y) & 8) == 8;
-                upper = ((int)game.Track.GetTileByIndex(x, y - 1) & 8) == 8;
-                lower = ((int)game.Track.GetTileByIndex(x, y + 1) & 8) == 8;
-                right = ((int)game.Track.GetTileByIndex(x + 1, y) & 8) == 8;
-                upperLeft = ((int)game.Track.GetTileByIndex(x - 1, y - 1) & 8) == 8;
-                upperRight = ((int)game.Track.GetTileByIndex(x + 1, y - 1) & 8) == 8;
-                lowerLeft = ((int)game.Track.GetTileByIndex(x - 1, y + 1) & 8) == 8;
-                lowerRight = ((int)game.Track.GetTileByIndex(x + 1, y + 1) & 8) == 8;
+                left = game.Track.GetTileByIndex(x - 1, y).HasFlag(TrackTile.Road);
+                upper = game.Track.GetTileByIndex(x, y - 1).HasFlag(TrackTile.Road);
+                lower = game.Track.GetTileByIndex(x, y + 1).HasFlag(TrackTile.Road);
+                right = game.Track.GetTileByIndex(x + 1, y).HasFlag(TrackTile.Road);
+                upperLeft = game.Track.GetTileByIndex(x - 1, y - 1).HasFlag(TrackTile.Road);
+                upperRight = game.Track.GetTileByIndex(x + 1, y - 1).HasFlag(TrackTile.Road);
+                lowerLeft = game.Track.GetTileByIndex(x - 1, y + 1).HasFlag(TrackTile.Road);
+                lowerRight = game.Track.GetTileByIndex(x + 1, y + 1).HasFlag(TrackTile.Road);
+            }
+            else
+            {
+                left = game.Track.GetTileByIndex(x - 1, y) == type;
+                upper = game.Track.GetTileByIndex(x, y - 1) == type;
+                lower = game.Track.GetTileByIndex(x, y + 1) == type;
+                right = game.Track.GetTileByIndex(x + 1, y) == type;
+                upperLeft = game.Track.GetTileByIndex(x - 1, y - 1) == type;
+                upperRight = game.Track.GetTileByIndex(x + 1, y - 1) == type;
+                lowerLeft = game.Track.GetTileByIndex(x - 1, y + 1) == type;
+                lowerRight = game.Track.GetTileByIndex(x + 1, y + 1) == type;
             }
 
             #region Upper Left

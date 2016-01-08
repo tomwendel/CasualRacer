@@ -1,4 +1,4 @@
-﻿namespace CasualRacer.Model
+namespace CasualRacer.Model
 {
     internal enum TrackTile
     {
