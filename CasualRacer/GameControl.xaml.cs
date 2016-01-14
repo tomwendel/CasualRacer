@@ -17,7 +17,7 @@ namespace CasualRacer
     /// </summary>
     public partial class GameControl : UserControl
     {
-        private readonly Game game = new Game();
+        private readonly Game game;
 
         private readonly Stopwatch totalWatch = new Stopwatch();
         private readonly Stopwatch elapsedWatch = new Stopwatch();
@@ -40,7 +40,7 @@ namespace CasualRacer
         public GameControl()
         {
             InitializeComponent();
-            DataContext = game;
+            DataContext = game = App.MainModel.Game;
 
             CompositionTarget.Rendering += OnRendering;
 

@@ -19,6 +19,8 @@ namespace CasualRacer
             InitializeComponent();
 
             NavigationFrame.Navigate(new StartPage(true));
+
+            DataContext = App.MainModel;
         }
 
         private void NavigationFrame_Navigating(object sender, NavigatingCancelEventArgs e)
