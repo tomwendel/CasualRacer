@@ -14,7 +14,7 @@ namespace CasualRacer.Model
 
         private int round = 0;
 
-        private int messuredRound = 1;
+        private int measuredRound = 1;
 
         private Vector position = new Vector();
 
@@ -110,11 +110,11 @@ namespace CasualRacer.Model
                     // Nächste Runde
                     if (goalFlag == GoalFlags.BeforeGoal && value == GoalFlags.AfterGoal)
                     {
-                        if (Round == MessuredRound)
+                        if (Round == MeasuredRound)
                         {
                             roundTimes.Add(RoundTime);
                             RoundTime = new TimeSpan();
-                            MessuredRound++;
+                            MeasuredRound++;
                         }
                         Round++;
                     }
@@ -155,15 +155,15 @@ namespace CasualRacer.Model
             }
         }
 
-        public int MessuredRound
+        public int MeasuredRound
         {
-            get { return messuredRound; }
+            get { return measuredRound; }
             set
             {
-                if (messuredRound != value)
+                if (measuredRound != value)
                 {
-                    messuredRound = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MessuredRound)));
+                    measuredRound = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MeasuredRound)));
                 }
             }
         }
