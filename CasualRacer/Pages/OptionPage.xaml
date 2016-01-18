@@ -9,7 +9,7 @@
       Title="OptionPage">
 
     <Grid>
-        <Button Content="Back" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click" />
+        <Button FontFamily="Wingdings" Content="ß" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click" />
 
     </Grid>
 </Page>

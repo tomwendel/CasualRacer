@@ -5,11 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CasualRacer"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="Casual Racer" Height="720" Width="1280" ResizeMode="NoResize">
-    <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="Assets/Background.png" Stretch="UniformToFill"/>
-        </Grid.Background>
+    <Window.Resources>
+        <Storyboard x:Key="SlideBackgroundIn">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="image">
+                <EasingDoubleKeyFrame KeyTime="0" Value="-200"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BounceEase EasingMode="EaseOut" Bounces="8" Bounciness="5"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource SlideBackgroundIn}"/>
+        </EventTrigger>
+    </Window.Triggers>
+    <Grid Background="Black">
+        <Image x:Name="image" Source="Assets/Background.png" RenderTransformOrigin="0.5,0.5"  Stretch="UniformToFill" >
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform Y="-200"/>
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
         <Frame x:Name="NavigationFrame" NavigationUIVisibility="Hidden" Navigating="NavigationFrame_Navigating" />
     </Grid>
 </Window>

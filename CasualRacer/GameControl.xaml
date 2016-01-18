@@ -9,6 +9,10 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
     <Canvas>
+        <TextBlock Text="{Binding Path=Player1.Round}" Canvas.Left="200" Canvas.Top="0" />
+        <TextBlock Text="{Binding Path=Player1.RoundTime}" Canvas.Left="200" Canvas.Top="20" />
+        <TextBlock Text="{Binding Path=Player1.TotalTime}" Canvas.Left="200" Canvas.Top="40" />
+        <ItemsControl ItemsSource="{Binding Path=Player1.RoundTimes}" Width="180" Height="200" />
         <Image Canvas.Left="-10"
                 Canvas.Top="-10"
                 Width="20"

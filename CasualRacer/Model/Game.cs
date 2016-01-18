@@ -1,32 +1,107 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 
 namespace CasualRacer.Model
 {
     internal class Game
     {
-        public Track Track { get; private set; }
+        /// <summary>
+        /// Ruft den <see cref="Track"/> ab.
+        /// </summary>
+        public Track Track { get; }
 
-        public Player Player1 { get; private set; }
+        /// <summary>
+        /// Gibt den aktuellen <see cref="GameState"/> zurück.
+        /// </summary>
+        public GameState State { get; private set; }
+
+        public TimeSpan CountDown { get; private set; }
+
+        /// <summary>
+        /// Ruft den <see cref="Player"/> 1 ab.
+        /// </summary>
+        public Player Player1 { get; }
+
+        /// <summary>
+        /// Ruft den <see cref="Player"/> 2 ab.
+        /// </summary>
+        public Player Player2 { get; }
 
         public Game()
         {
+            State = GameState.CountDown;
+            CountDown = TimeSpan.FromSeconds(3);
+
             Track = Track.LoadFromTxt("./Tracks/Track1.txt");
 
-            Player1 = new Player();
+            Vector goal = Track.GetGoalPosition();
+            Vector startOffset1 = new Vector();
+            Vector startOffset2 = new Vector();
+            float startRotation = 0f;
+            switch (Track.GetTileByIndex((int)goal.X, (int)goal.Y))
+            {
+                case TrackTile.GoalDown:
+                    startOffset1 = new Vector(0.75f, 0.25f);
+                    startOffset2 = new Vector(0.25f, 0.25f);
+                    startRotation = 180f;
+                    break;
+                case TrackTile.GoalLeft:
+                    startOffset1 = new Vector(0.75f, 0.75f);
+                    startOffset2 = new Vector(0.75f, 0.25f);
+                    startRotation = -90f;
+                    break;
+                case TrackTile.GoalRight:
+                    startOffset1 = new Vector(0.25f, 0.25f);
+                    startOffset2 = new Vector(0.25f, 0.75f);
+                    startRotation = 90f;
+                    break;
+                case TrackTile.GoalUp:
+                    startOffset1 = new Vector(0.25f, 0.75f);
+                    startOffset2 = new Vector(0.75f, 0.75f);
+                    startRotation = 0f;
+                    break;
+            }
+
+            Player1 = new Player() { Position = (goal + startOffset1) * Track.CELLSIZE, Direction = startRotation };
 
         }
 
+        /// <summary>
+        /// Aktualisiert den Spielstatus.
+        /// </summary>
+        /// <param name="totalTime">Die total abgelaufene Zeit.</param>
+        /// <param name="elapsedTime">Die abgelaufene Zeit seit dem letzten Update.</param>
         public void Update(TimeSpan totalTime, TimeSpan elapsedTime)
         {
-            UpdatePlayer(totalTime, elapsedTime, Player1);
+            switch (State)
+            {
+                case GameState.CountDown:
+                    CountDown -= elapsedTime;
+                    if (CountDown < TimeSpan.Zero)
+                    {
+                        CountDown = TimeSpan.Zero;
+                        State = GameState.Race;
+                    }
+                    break;
+                case GameState.Race:
+                    UpdatePlayer(totalTime, elapsedTime, Player1);
+                    if (Player1.Round == 5)
+                        State = GameState.Finished;
+                    break;
+            }
         }
 
-        private void UpdatePlayer(TimeSpan totalTime, TimeSpan elapsedTime,Player player)
+        /// <summary>
+        /// Aktualisiert den gegebenen Spieler.
+        /// </summary>
+        /// <param name="totalTime">Die total abgelaufene Zeit.</param>
+        /// <param name="elapsedTime">Die abgelaufene Zeit seit dem letzten Update.</param>
+        /// <param name="player">Der Spieler.</param>
+        private void UpdatePlayer(TimeSpan totalTime, TimeSpan elapsedTime, Player player)
         {
+            player.TotalTime += elapsedTime;
+            player.RoundTime += elapsedTime;
+
             // Lenkung
             if (player.WheelLeft)
                 player.Direction -= (float)elapsedTime.TotalSeconds * 100;
@@ -34,13 +109,13 @@ namespace CasualRacer.Model
                 player.Direction += (float)elapsedTime.TotalSeconds * 100;
 
             // Beschleunigung & Bremse
-            float targetSpeed = 0f;
+            var targetSpeed = 0f;
             if (player.Acceleration)
                 targetSpeed = 100f;
             if (player.Break)
                 targetSpeed = -50f;
 
-            //Anpassung je nach Untergrund
+            // Anpassung je nach Untergrund
             targetSpeed *= Track.GetSpeedByPosition(player.Position);
 
             // Beschleunigung
@@ -55,14 +130,45 @@ namespace CasualRacer.Model
                 player.Velocity = Math.Max(targetSpeed, player.Velocity);
             }
 
-
-
             // Positionsveränderung
-            float direction = (float)(player.Direction * Math.PI) / 180f;
-            Vector velocity = new Vector(
-                Math.Sin(direction) * player.Velocity * elapsedTime.TotalSeconds,
+            var direction = (float)(player.Direction * Math.PI) / 180f;
+            var velocity = new Vector(
+                Math.Sin(direction) * player.Velocity * elapsedTime.TotalSeconds, 
                 -Math.Cos(direction) * player.Velocity * elapsedTime.TotalSeconds);
             player.Position += velocity;
+
+            // Goal State ermitteln
+            var playerCell = Track.GetTileByPosition(player.Position);
+            if (((int)playerCell & 0xC) > 0)
+            {
+                // Player stelt in einer Goal-Zelle
+                switch (playerCell)
+                {
+                    case TrackTile.GoalDown:
+                        player.GoalFlag = (player.Position.Y % Track.CELLSIZE < Track.CELLSIZE / 2) ? GoalFlags.BeforeGoal : GoalFlags.AfterGoal;
+                        break;
+                    case TrackTile.GoalLeft:
+                        player.GoalFlag = (player.Position.X % Track.CELLSIZE >= Track.CELLSIZE / 2) ? GoalFlags.BeforeGoal : GoalFlags.AfterGoal;
+                        break;
+                    case TrackTile.GoalRight:
+                        player.GoalFlag = (player.Position.X % Track.CELLSIZE < Track.CELLSIZE / 2) ? GoalFlags.BeforeGoal : GoalFlags.AfterGoal;
+                        break;
+                    case TrackTile.GoalUp:
+                        player.GoalFlag = (player.Position.Y % Track.CELLSIZE >= Track.CELLSIZE / 2) ? GoalFlags.BeforeGoal : GoalFlags.AfterGoal;
+                        break;
+                }
+            }
+            else
+            {
+                player.GoalFlag = GoalFlags.None;
+            }
+        }
+
+        public enum GameState
+        {
+            CountDown,
+            Race,
+            Finished
         }
     }
 }

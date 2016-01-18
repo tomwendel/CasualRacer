@@ -3,3 +3,4 @@
 - Aline (http://www.alineimwunderland.de/) hat Logo und UI-Hintergründe gemacht
 - BAHI (http://opengameart.org/users/bahi) lieferte die Auto-Modelle
 - TRBRY (http://opengameart.org/users/trbry) brachte Fahrbahn-Texturen ins Rennen
+- Kenney.nl (http://kenney.nl/) steuerte die Tiles und die Fahrzeuge bei
