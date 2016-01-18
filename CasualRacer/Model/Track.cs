@@ -20,19 +20,32 @@ namespace CasualRacer.Model
         /// </summary>
         public const TrackTile DEFAULT_TILE = TrackTile.Dirt;
 
-        /// <summary>
-        /// Ruft die Zellen ab.
-        /// </summary>
-        public TrackTile[,] Tiles { get; }
+        private readonly Point goalPosition;
 
         /// <summary>
         /// Erzeugt eine neue Instanz der <see cref="Track"/> Klasse.
         /// </summary>
         /// <param name="width">Die Breite des Tracks.</param>
         /// <param name="height">Die Höhe des Tracks.</param>
-        public Track(int width, int height)
+        /// <param name="goalPosition">Die Position des Ziels.</param>
+        public Track(int width, int height, Point goalPosition)
         {
             Tiles = new TrackTile[width, height];
+
+            this.goalPosition = goalPosition;
+        }
+
+        /// <summary>
+        /// Ruft die Zellen ab.
+        /// </summary>
+        public TrackTile[,] Tiles { get; }
+
+        /// <summary>
+        /// Gibt die Position des Ziels zurueck.
+        /// </summary>
+        public Point GoalPosition
+        {
+            get { return goalPosition; }
         }
 
         /// <summary>
@@ -44,7 +57,7 @@ namespace CasualRacer.Model
         /// <returns>Geschwindigkeitsmultiplikator</returns>
         public float GetSpeedByPosition(Vector position)
         {
-            var tile = GetTileByPosition(position);
+            var tile = GetTileByPosition((Point)position);
 
             var speed = 0.0f;
             if (tile.HasFlag(TrackTile.Road))
@@ -55,9 +68,9 @@ namespace CasualRacer.Model
             {
                 switch (tile)
                 {
-                    case TrackTile.Dirt: speed = 0.2f; break;
-                    case TrackTile.Gras: speed = 0.8f; break;
-                    case TrackTile.Sand: speed = 0.4f; break;
+                case TrackTile.Dirt: speed = 0.2f; break;
+                case TrackTile.Gras: speed = 0.8f; break;
+                case TrackTile.Sand: speed = 0.4f; break;
                 }
             }
 
@@ -71,7 +84,7 @@ namespace CasualRacer.Model
         /// </summary>
         /// <param name="position">Position</param>
         /// <returns>Zelleninhalt</returns>
-        public TrackTile GetTileByPosition(Vector position)
+        public TrackTile GetTileByPosition(Point position)
         {
             var cellX = (int)(position.X / CELLSIZE);
             var cellY = (int)(position.Y / CELLSIZE);
@@ -89,23 +102,6 @@ namespace CasualRacer.Model
                 return DEFAULT_TILE;
 
             return Tiles[x, y];
-        }
-
-        public Vector GetGoalPosition()
-        {
-            for (int y = 0; y < Tiles.GetLength(1); y++)
-            {
-                for (int x = 0; x < Tiles.GetLength(0); x++)
-                {
-                    if (Tiles[x, y] == TrackTile.GoalDown ||
-                        Tiles[x, y] == TrackTile.GoalLeft ||
-                        Tiles[x, y] == TrackTile.GoalRight ||
-                        Tiles[x, y] == TrackTile.GoalUp)
-                        return new Vector(x, y);
-                }
-            }
-
-            throw new Exception("No Goal found");
         }
 
         /// <summary>
@@ -159,15 +155,35 @@ namespace CasualRacer.Model
 
                 var y = 1;
 
+                Point? goalPos = null;
+
                 do
                 {
-                    allTiles.Add(GetTilesFromLine(line, tilesPerLine, y++));
+                    TrackTile[] tiles = GetTilesFromLine(line, tilesPerLine, y++);
+
+                    for (int i = 0; i < tiles.Length; i++)
+                    {
+                        if (tiles[i].IsGoalTile())
+                        {
+                            if (goalPos != null)
+                            {
+                                throw new Exception("The file contains multiple goals.");
+                            }
+
+                            goalPos = new Point(i, y - 2);
+                        }
+                    }
+
+                    allTiles.Add(tiles);
                 }
                 while ((line = streamReader.ReadLine()) != null);
 
-                // TODO: Prüfen, ob es ein Goal gibt
+                if (goalPos == null)
+                {
+                    throw new Exception("The file does not contains any goals.");
+                }
 
-                return BuildTrack(tilesPerLine, allTiles);
+                return BuildTrack(tilesPerLine, allTiles, (Point)goalPos);
             }
         }
 
@@ -218,12 +234,13 @@ namespace CasualRacer.Model
         /// </summary>
         /// <param name="tilesPerLine">Die Anzahl an Tiles pro Zeile.</param>
         /// <param name="allTiles">Die Liste aller Tiles.</param>
+        /// <param name="goal">Die Position des Ziels.</param>
         /// <returns>Ein <see cref="Track"/> Objekt zusammengesetzt aus den Tiles.</returns>
-        private static Track BuildTrack(int tilesPerLine, IEnumerable<TrackTile[]> allTiles)
+        private static Track BuildTrack(int tilesPerLine, IEnumerable<TrackTile[]> allTiles, Point goal)
         {
             int y = 0;
 
-            var track = new Track(tilesPerLine, allTiles.Count());
+            var track = new Track(tilesPerLine, allTiles.Count(), goal);
 
             foreach (var tileRow in allTiles)
             {

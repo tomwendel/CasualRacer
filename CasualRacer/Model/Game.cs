@@ -34,36 +34,37 @@ namespace CasualRacer.Model
 
             Track = Track.LoadFromTxt("./Tracks/Track1.txt");
 
-            Vector goal = Track.GetGoalPosition();
-            Vector startOffset1 = new Vector();
-            Vector startOffset2 = new Vector();
+            Point goal = Track.GoalPosition;
+
+            Point startOffset1 = default(Point);
+            Point startOffset2 = default(Point);
+
             float startRotation = 0f;
+
             switch (Track.GetTileByIndex((int)goal.X, (int)goal.Y))
             {
                 case TrackTile.GoalDown:
-                    startOffset1 = new Vector(0.75f, 0.25f);
-                    startOffset2 = new Vector(0.25f, 0.25f);
+                    startOffset1 = new Point(0.75f, 0.25f);
+                    startOffset2 = new Point(0.25f, 0.25f);
                     startRotation = 180f;
                     break;
                 case TrackTile.GoalLeft:
-                    startOffset1 = new Vector(0.75f, 0.75f);
-                    startOffset2 = new Vector(0.75f, 0.25f);
+                    startOffset1 = new Point(0.75f, 0.75f);
+                    startOffset2 = new Point(0.75f, 0.25f);
                     startRotation = -90f;
                     break;
                 case TrackTile.GoalRight:
-                    startOffset1 = new Vector(0.25f, 0.25f);
-                    startOffset2 = new Vector(0.25f, 0.75f);
+                    startOffset1 = new Point(0.25f, 0.25f);
+                    startOffset2 = new Point(0.25f, 0.75f);
                     startRotation = 90f;
                     break;
                 case TrackTile.GoalUp:
-                    startOffset1 = new Vector(0.25f, 0.75f);
-                    startOffset2 = new Vector(0.75f, 0.75f);
-                    startRotation = 0f;
+                    startOffset1 = new Point(0.25f, 0.75f);
+                    startOffset2 = new Point(0.75f, 0.75f);
                     break;
             }
 
-            Player1 = new Player() { Position = (goal + startOffset1) * Track.CELLSIZE, Direction = startRotation };
-
+            Player1 = new Player() { Position = ((Vector)goal + (Vector)startOffset1) * Track.CELLSIZE, Direction = startRotation };
         }
 
         /// <summary>
@@ -138,7 +139,7 @@ namespace CasualRacer.Model
             player.Position += velocity;
 
             // Goal State ermitteln
-            var playerCell = Track.GetTileByPosition(player.Position);
+            var playerCell = Track.GetTileByPosition((Point)player.Position);
             if (((int)playerCell & 0xC) > 0)
             {
                 // Player stelt in einer Goal-Zelle
