@@ -145,22 +145,22 @@ namespace CasualRacer.Model
                 switch (playerCell)
                 {
                     case TrackTile.GoalDown:
-                        player.GoalFlag = (player.Position.Y % Track.CELLSIZE < Track.CELLSIZE / 2) ? GoalFlags.BeforeGoal : GoalFlags.AfterGoal;
+                        player.PositionRelativeToGoal = (player.Position.Y % Track.CELLSIZE < Track.CELLSIZE / 2) ? PlayerPositionRelativeToGoal.BeforeGoal : PlayerPositionRelativeToGoal.AfterGoal;
                         break;
                     case TrackTile.GoalLeft:
-                        player.GoalFlag = (player.Position.X % Track.CELLSIZE >= Track.CELLSIZE / 2) ? GoalFlags.BeforeGoal : GoalFlags.AfterGoal;
+                        player.PositionRelativeToGoal = (player.Position.X % Track.CELLSIZE >= Track.CELLSIZE / 2) ? PlayerPositionRelativeToGoal.BeforeGoal : PlayerPositionRelativeToGoal.AfterGoal;
                         break;
                     case TrackTile.GoalRight:
-                        player.GoalFlag = (player.Position.X % Track.CELLSIZE < Track.CELLSIZE / 2) ? GoalFlags.BeforeGoal : GoalFlags.AfterGoal;
+                        player.PositionRelativeToGoal = (player.Position.X % Track.CELLSIZE < Track.CELLSIZE / 2) ? PlayerPositionRelativeToGoal.BeforeGoal : PlayerPositionRelativeToGoal.AfterGoal;
                         break;
                     case TrackTile.GoalUp:
-                        player.GoalFlag = (player.Position.Y % Track.CELLSIZE >= Track.CELLSIZE / 2) ? GoalFlags.BeforeGoal : GoalFlags.AfterGoal;
+                        player.PositionRelativeToGoal = (player.Position.Y % Track.CELLSIZE >= Track.CELLSIZE / 2) ? PlayerPositionRelativeToGoal.BeforeGoal : PlayerPositionRelativeToGoal.AfterGoal;
                         break;
                 }
             }
             else
             {
-                player.GoalFlag = GoalFlags.None;
+                player.PositionRelativeToGoal = PlayerPositionRelativeToGoal.AwayFromGoal;
             }
         }
 

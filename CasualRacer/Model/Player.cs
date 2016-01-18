@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows;
-
-namespace CasualRacer.Model
+﻿namespace CasualRacer.Model
 {
+    using System;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.Windows;
+
+    /// <summary>
+    /// Abbildung eines Spielers.
+    /// </summary>
     internal class Player : INotifyPropertyChanged
     {
+        private readonly ObservableCollection<TimeSpan> roundTimes = new ObservableCollection<TimeSpan>();
+
         private float direction = 90f;
 
         private float velocity = 0f;
@@ -16,15 +20,18 @@ namespace CasualRacer.Model
 
         private int measuredRound = 1;
 
-        private Vector position = new Vector();
+        private Vector position = default(Vector);
 
-        private GoalFlags goalFlag = GoalFlags.None;
+        private PlayerPositionRelativeToGoal goalFlag = PlayerPositionRelativeToGoal.AwayFromGoal;
 
-        private TimeSpan roundTime;
+        private TimeSpan roundTime = TimeSpan.Zero;
 
-        private TimeSpan totalTime;
+        private TimeSpan totalTime = TimeSpan.Zero;
 
-        private ObservableCollection<TimeSpan> roundTimes = new ObservableCollection<TimeSpan>();
+        /// <summary>
+        /// Tritt ein, wenn sich ein Eigenschaftswert ändert.
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Ruft die Richtung ab oder setzt diese.
@@ -100,35 +107,38 @@ namespace CasualRacer.Model
             }
         }
 
-        public GoalFlags GoalFlag
+        public PlayerPositionRelativeToGoal PositionRelativeToGoal
         {
             get { return goalFlag; }
             set
             {
                 if (goalFlag != value)
                 {
-                    // Nächste Runde
-                    if (goalFlag == GoalFlags.BeforeGoal && value == GoalFlags.AfterGoal)
+                    if (goalFlag == PlayerPositionRelativeToGoal.BeforeGoal && value == PlayerPositionRelativeToGoal.AfterGoal)
                     {
-                        if (Round == MeasuredRound)
+                        // Nächste Runde
+                        if (Round++ == measuredRound)
                         {
                             roundTimes.Add(RoundTime);
-                            RoundTime = new TimeSpan();
-                            MeasuredRound++;
+                            RoundTime = TimeSpan.Zero;
+                            measuredRound++;
                         }
-                        Round++;
+                    }
+                    else if (goalFlag == PlayerPositionRelativeToGoal.AfterGoal && value == PlayerPositionRelativeToGoal.BeforeGoal)
+                    {
+                        // Runde zurück
+                        Round--;
                     }
 
-                    // Runde zurück
-                    if (goalFlag == GoalFlags.AfterGoal && value == GoalFlags.BeforeGoal)
-                        Round--;
-
                     goalFlag = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(GoalFlag)));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PositionRelativeToGoal)));
                 }
             }
         }
 
+        /// <summary>
+        /// Gibt die Gesamtzeit der Rennes zurueck.
+        /// </summary>
         public TimeSpan TotalTime
         {
             get { return totalTime; }
@@ -142,6 +152,9 @@ namespace CasualRacer.Model
             }
         }
 
+        /// <summary>
+        /// Gibt die Zeit der aktuellen Runde zurueck.
+        /// </summary>
         public TimeSpan RoundTime
         {
             get { return roundTime; }
@@ -151,19 +164,6 @@ namespace CasualRacer.Model
                 {
                     roundTime = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RoundTime)));
-                }
-            }
-        }
-
-        public int MeasuredRound
-        {
-            get { return measuredRound; }
-            set
-            {
-                if (measuredRound != value)
-                {
-                    measuredRound = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MeasuredRound)));
                 }
             }
         }
@@ -182,14 +182,5 @@ namespace CasualRacer.Model
         /// Ruft ab, ob der Spieler nach rechts lenkt.
         /// </summary>
         public bool WheelRight { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-    }
-
-    public enum GoalFlags
-    {
-        None,
-        BeforeGoal,
-        AfterGoal,
     }
 }
