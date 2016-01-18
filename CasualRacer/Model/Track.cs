@@ -180,7 +180,7 @@ namespace CasualRacer.Model
 
                 if (goalPos == null)
                 {
-                    throw new Exception("The file does not contains any goals.");
+                    throw new Exception("The file does not contains any goal.");
                 }
 
                 return BuildTrack(tilesPerLine, allTiles, (Point)goalPos);
