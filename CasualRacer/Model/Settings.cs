@@ -1,11 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CasualRacer.Model
 {
-    internal class Settings
+    [Serializable]
+    public class Settings
     {
+        /// <summary>
+        /// Benutzername des Spielers
+        /// </summary>
+        public string Username { get; set; }
+
+        public Settings()
+        {
+            Username = "Username";
+        }
     }
 }

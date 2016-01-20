@@ -17,7 +17,10 @@ namespace CasualRacer
             get
             {
                 if (main == null)
+                {
                     main = new Model.Main();
+                    main.LoadSettings();
+                }
                 return main;
             }
         }
