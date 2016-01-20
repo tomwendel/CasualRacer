@@ -55,9 +55,9 @@ namespace CasualRacer.Model
         /// </summary>
         /// <param name="position">Position</param>
         /// <returns>Geschwindigkeitsmultiplikator</returns>
-        public float GetSpeedByPosition(Vector position)
+        public float GetSpeedByPosition(Point position)
         {
-            var tile = GetTileByPosition((Point)position);
+            var tile = GetTileByPosition(position);
 
             var speed = 0.0f;
             if (tile.HasFlag(TrackTile.Road))
@@ -183,7 +183,7 @@ namespace CasualRacer.Model
                     throw new Exception("The file does not contains any goal.");
                 }
 
-                return BuildTrack(tilesPerLine, allTiles, (Point)goalPos);
+                return BuildTrack(tilesPerLine, allTiles, goalPos.Value);
             }
         }
 

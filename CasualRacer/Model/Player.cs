@@ -20,7 +20,7 @@
 
         private int measuredRound = 1;
 
-        private Vector position = default(Vector);
+        private Point position = default(Point);
 
         private PlayerPositionRelativeToGoal goalFlag = PlayerPositionRelativeToGoal.AwayFromGoal;
 
@@ -52,7 +52,7 @@
         /// <summary>
         /// Ruft die Position ab oder setzt diese.
         /// </summary>
-        public Vector Position
+        public Point Position
         {
             get { return position; }
             set

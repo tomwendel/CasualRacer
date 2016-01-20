@@ -34,37 +34,39 @@ namespace CasualRacer.Model
 
             Track = Track.LoadFromTxt("./Tracks/Track1.txt");
 
-            Point goal = Track.GoalPosition;
+            Vector goal = (Vector)Track.GoalPosition;
 
-            Point startOffset1 = default(Point);
-            Point startOffset2 = default(Point);
+            Vector startOffset1 = default(Vector);
+            Vector startOffset2 = default(Vector);
 
             float startRotation = 0f;
 
             switch (Track.GetTileByIndex((int)goal.X, (int)goal.Y))
             {
                 case TrackTile.GoalDown:
-                    startOffset1 = new Point(0.75f, 0.25f);
-                    startOffset2 = new Point(0.25f, 0.25f);
+                    startOffset1 = new Vector(0.75f, 0.25f);
+                    startOffset2 = new Vector(0.25f, 0.25f);
                     startRotation = 180f;
                     break;
                 case TrackTile.GoalLeft:
-                    startOffset1 = new Point(0.75f, 0.75f);
-                    startOffset2 = new Point(0.75f, 0.25f);
+                    startOffset1 = new Vector(0.75f, 0.75f);
+                    startOffset2 = new Vector(0.75f, 0.25f);
                     startRotation = -90f;
                     break;
                 case TrackTile.GoalRight:
-                    startOffset1 = new Point(0.25f, 0.25f);
-                    startOffset2 = new Point(0.25f, 0.75f);
+                    startOffset1 = new Vector(0.25f, 0.25f);
+                    startOffset2 = new Vector(0.25f, 0.75f);
                     startRotation = 90f;
                     break;
                 case TrackTile.GoalUp:
-                    startOffset1 = new Point(0.25f, 0.75f);
-                    startOffset2 = new Point(0.75f, 0.75f);
+                    startOffset1 = new Vector(0.25f, 0.75f);
+                    startOffset2 = new Vector(0.75f, 0.75f);
                     break;
             }
 
-            Player1 = new Player() { Position = ((Vector)goal + (Vector)startOffset1) * Track.CELLSIZE, Direction = startRotation };
+            Player1 = new Player() {
+                Position = (Point)((goal + startOffset1) * Track.CELLSIZE),
+                Direction = startRotation };
         }
 
         /// <summary>
