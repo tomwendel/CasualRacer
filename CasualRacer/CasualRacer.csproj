@@ -55,7 +55,9 @@
     </ApplicationDefinition>
     <Compile Include="Model\Highscores.cs" />
     <Compile Include="Model\Main.cs" />
+    <Compile Include="Model\PlayerPositionRelativeToGoal.cs" />
     <Compile Include="Model\Settings.cs" />
+    <Compile Include="Model\TrackTileExtensions.cs" />
     <Compile Include="TileType.cs" />
     <Page Include="GameControl.xaml">
       <SubType>Designer</SubType>
