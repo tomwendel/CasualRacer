@@ -88,7 +88,7 @@ namespace CasualRacer.Model
                     break;
                 case GameState.Race:
                     UpdatePlayer(totalTime, elapsedTime, Player1);
-                    if (Player1.Round == 5)
+                    if (Player1.Lap == 5)
                         State = GameState.Finished;
                     break;
             }
@@ -103,7 +103,7 @@ namespace CasualRacer.Model
         private void UpdatePlayer(TimeSpan totalTime, TimeSpan elapsedTime, Player player)
         {
             player.TotalTime += elapsedTime;
-            player.RoundTime += elapsedTime;
+            player.LapTime += elapsedTime;
 
             // Lenkung
             if (player.WheelLeft)
