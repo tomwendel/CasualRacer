@@ -10,21 +10,21 @@
     /// </summary>
     internal class Player : INotifyPropertyChanged
     {
-        private readonly ObservableCollection<TimeSpan> roundTimes = new ObservableCollection<TimeSpan>();
+        private readonly ObservableCollection<TimeSpan> lapTimes = new ObservableCollection<TimeSpan>();
 
         private float direction = 90f;
 
         private float velocity = 0f;
 
-        private int round = 0;
+        private int lap = 0;
 
-        private int measuredRound = 1;
+        private int measuredLap = 1;
 
         private Point position = default(Point);
 
         private PlayerPositionRelativeToGoal goalFlag = PlayerPositionRelativeToGoal.AwayFromGoal;
 
-        private TimeSpan roundTime = TimeSpan.Zero;
+        private TimeSpan lapTime = TimeSpan.Zero;
 
         private TimeSpan totalTime = TimeSpan.Zero;
 
@@ -94,15 +94,15 @@
         /// <summary>
         /// Gibt die aktuelle Runde an.
         /// </summary>
-        public int Round
+        public int Lap
         {
-            get { return round; }
+            get { return lap; }
             set
             {
-                if (round != value)
+                if (lap != value)
                 {
-                    round = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Round)));
+                    lap = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Lap)));
                 }
             }
         }
@@ -117,17 +117,17 @@
                     if (goalFlag == PlayerPositionRelativeToGoal.BeforeGoal && value == PlayerPositionRelativeToGoal.AfterGoal)
                     {
                         // Nächste Runde
-                        if (Round++ == measuredRound)
+                        if (Lap++ == measuredLap)
                         {
-                            roundTimes.Add(RoundTime);
-                            RoundTime = TimeSpan.Zero;
-                            measuredRound++;
+                            lapTimes.Add(LapTime);
+                            LapTime = TimeSpan.Zero;
+                            measuredLap++;
                         }
                     }
                     else if (goalFlag == PlayerPositionRelativeToGoal.AfterGoal && value == PlayerPositionRelativeToGoal.BeforeGoal)
                     {
                         // Runde zurück
-                        Round--;
+                        Lap--;
                     }
 
                     goalFlag = value;
@@ -155,22 +155,22 @@
         /// <summary>
         /// Gibt die Zeit der aktuellen Runde zurueck.
         /// </summary>
-        public TimeSpan RoundTime
+        public TimeSpan LapTime
         {
-            get { return roundTime; }
+            get { return lapTime; }
             set
             {
-                if (roundTime != value)
+                if (lapTime != value)
                 {
-                    roundTime = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RoundTime)));
+                    lapTime = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(LapTime)));
                 }
             }
         }
 
-        public ObservableCollection<TimeSpan> RoundTimes
+        public ObservableCollection<TimeSpan> LapTimes
         {
-            get { return roundTimes; }
+            get { return lapTimes; }
         }
 
         /// <summary>
