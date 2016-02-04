@@ -13,9 +13,14 @@ namespace CasualRacer.Pages
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.GoBack();
+        }
+
+        private void ResultsButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new ResultsPage());
         }
     }
 }

@@ -28,9 +28,7 @@ namespace CasualRacer.Pages
 
         private void GameButton_Click(object sender, RoutedEventArgs e)
         {
-            Track track = App.MainModel.Tracks[0];
-            App.MainModel.NewGame(track);
-            NavigationService.Navigate(new GamePage());
+            NavigationService.Navigate(new TrackPage());
         }
 
         private void OptionsButton_Click(object sender, RoutedEventArgs e)
