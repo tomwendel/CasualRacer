@@ -11,6 +11,7 @@ namespace CasualRacer.Pages
         public OptionPage()
         {
             InitializeComponent();
+            DataContext = App.MainModel;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

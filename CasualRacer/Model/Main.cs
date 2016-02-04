@@ -13,17 +13,19 @@ namespace CasualRacer.Model
 
         public Settings Settings { get; private set; }
 
+        public List<Track> Tracks { get; private set; }
+
         public Highscores Highscores { get; private set; }
 
         public Main()
         {
             Settings = new Settings();
-            Settings.Username = "Anderer Tom";
+            Tracks = new List<Track>();
         }
 
-        public void NewGame()
+        public void NewGame(Track track)
         {
-            Game = new Game();
+            Game = new Game(track);
         }
 
         public void SaveSettings()
@@ -60,6 +62,16 @@ namespace CasualRacer.Model
                 }
             }
             catch (Exception) { }
+        }
+
+        public void LoadTracks()
+        {
+            string path = Path.Combine(Environment.CurrentDirectory, "Tracks");
+            string[] files = Directory.GetFiles(path, "*.txt");
+            foreach (var file in files)
+            {
+                Tracks.Add(Track.LoadFromTxt(file));
+            }
         }
     }
 }
