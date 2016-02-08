@@ -27,12 +27,11 @@ namespace CasualRacer.Model
         /// </summary>
         public Player Player2 { get; }
 
-        public Game()
+        public Game(Track track)
         {
+            Track = track;
             State = GameState.CountDown;
             CountDown = TimeSpan.FromSeconds(3);
-
-            Track = Track.LoadFromTxt("./Tracks/Track1.txt");
 
             Vector goal = (Vector)Track.GoalPosition;
 

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using CasualRacer.Pages;
+using System.Threading.Tasks;
 
 namespace CasualRacer
 {
@@ -74,6 +76,22 @@ namespace CasualRacer
                 Duration = new Duration(TimeSpan.FromMilliseconds(200))
             };
             NavigationFrame.BeginAnimation(OpacityProperty, animation);
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+            Task.Run(() =>
+            {
+                App.MainModel.LoadSettings();
+                App.MainModel.LoadTracks();
+            });
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            App.MainModel.SaveSettings();
+            base.OnClosing(e);
         }
     }
 }

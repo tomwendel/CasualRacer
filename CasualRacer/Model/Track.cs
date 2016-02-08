@@ -28,12 +28,15 @@ namespace CasualRacer.Model
         /// <param name="width">Die Breite des Tracks.</param>
         /// <param name="height">Die Höhe des Tracks.</param>
         /// <param name="goalPosition">Die Position des Ziels.</param>
-        public Track(int width, int height, Point goalPosition)
+        public Track(string name, int width, int height, Point goalPosition)
         {
+            Name = name;
             Tiles = new TrackTile[width, height];
 
             this.goalPosition = goalPosition;
         }
+
+        public string Name { get; private set; }
 
         /// <summary>
         /// Ruft die Zellen ab.
@@ -119,7 +122,7 @@ namespace CasualRacer.Model
 
             using (Stream stream = File.OpenRead(path))
             {
-                return LoadFromTxt(stream);
+                return LoadFromTxt(stream, path);
             }
         }
 
@@ -132,7 +135,7 @@ namespace CasualRacer.Model
         /// </returns>
         /// <exception cref="ArgumentNullException">Der Stream darf nicht null sein.</exception>
         /// <exception cref="FormatException">Die Datei ist leer.</exception>
-        public static Track LoadFromTxt(Stream stream)
+        public static Track LoadFromTxt(Stream stream, string name)
         {
             if (stream == null)
             {
@@ -183,7 +186,7 @@ namespace CasualRacer.Model
                     throw new Exception("The file does not contains any goal.");
                 }
 
-                return BuildTrack(tilesPerLine, allTiles, goalPos.Value);
+                return BuildTrack(name, tilesPerLine, allTiles, goalPos.Value);
             }
         }
 
@@ -236,11 +239,11 @@ namespace CasualRacer.Model
         /// <param name="allTiles">Die Liste aller Tiles.</param>
         /// <param name="goal">Die Position des Ziels.</param>
         /// <returns>Ein <see cref="Track"/> Objekt zusammengesetzt aus den Tiles.</returns>
-        private static Track BuildTrack(int tilesPerLine, IEnumerable<TrackTile[]> allTiles, Point goal)
+        private static Track BuildTrack(string name, int tilesPerLine, IEnumerable<TrackTile[]> allTiles, Point goal)
         {
             int y = 0;
 
-            var track = new Track(tilesPerLine, allTiles.Count(), goal);
+            var track = new Track(name, tilesPerLine, allTiles.Count(), goal);
 
             foreach (var tileRow in allTiles)
             {

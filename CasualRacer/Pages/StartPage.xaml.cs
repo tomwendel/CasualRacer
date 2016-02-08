@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using CasualRacer.Model;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
@@ -27,8 +28,7 @@ namespace CasualRacer.Pages
 
         private void GameButton_Click(object sender, RoutedEventArgs e)
         {
-            App.MainModel.NewGame();
-            NavigationService.Navigate(new GamePage());
+            NavigationService.Navigate(new TrackPage());
         }
 
         private void OptionsButton_Click(object sender, RoutedEventArgs e)

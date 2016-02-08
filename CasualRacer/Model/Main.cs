@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,23 +8,42 @@ using System.Xml.Serialization;
 
 namespace CasualRacer.Model
 {
-    internal class Main
+    internal class Main : INotifyPropertyChanged
     {
+        private Track selectedTrack;
+
         public Game Game { get; private set; }
 
         public Settings Settings { get; private set; }
+
+        public List<Track> Tracks { get; private set; }
+
+
+
+        public Track SelectedTrack {
+            get { return selectedTrack; }
+            set
+            {
+                if (selectedTrack != value)
+                {
+                    selectedTrack = value;
+                    if (PropertyChanged != null)
+                        PropertyChanged(this, new PropertyChangedEventArgs("SelectedTrack"));
+                }
+            }
+        }
 
         public Highscores Highscores { get; private set; }
 
         public Main()
         {
             Settings = new Settings();
-            Settings.Username = "Anderer Tom";
+            Tracks = new List<Track>();
         }
 
-        public void NewGame()
+        public void NewGame(Track track)
         {
-            Game = new Game();
+            Game = new Game(track);
         }
 
         public void SaveSettings()
@@ -61,5 +81,17 @@ namespace CasualRacer.Model
             }
             catch (Exception) { }
         }
+
+        public void LoadTracks()
+        {
+            string path = Path.Combine(Environment.CurrentDirectory, "Tracks");
+            string[] files = Directory.GetFiles(path, "*.txt");
+            foreach (var file in files)
+            {
+                Tracks.Add(Track.LoadFromTxt(file));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
