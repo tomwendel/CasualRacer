@@ -6,7 +6,7 @@ using System.Text;
 namespace CasualRacer.Model
 {
     /// <summary>
-    /// Klasse mit Erweiterungsmethoden fuer die <see cref="TrackTile"/>-Klasse.
+    /// Klasse mit Erweiterungsmethoden fuer die <see cref="TrackTile"/>-Enum.
     /// </summary>
     internal static class TrackTileExtensions
     {
