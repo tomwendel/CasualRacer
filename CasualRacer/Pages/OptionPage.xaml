@@ -19,8 +19,8 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label Content="Username" Foreground="White" />
-            <TextBox Grid.Column="1" Text="{Binding Path=Settings.Username}" />
+            <Label Content="racer's name:" Foreground="White" />
+            <TextBox Grid.Column="1" Text="{Binding Path=Settings.RacerName}" />
         </Grid>
 
     </Grid>
