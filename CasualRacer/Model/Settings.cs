@@ -8,11 +8,11 @@ namespace CasualRacer.Model
         /// <summary>
         /// Benutzername des Spielers
         /// </summary>
-        public string Username { get; set; }
+        public string RacerName { get; set; }
 
         public Settings()
         {
-            Username = "Username";
+            RacerName = "Racer 1";
         }
     }
 }
