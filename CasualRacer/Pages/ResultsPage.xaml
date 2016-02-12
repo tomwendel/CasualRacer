@@ -9,6 +9,13 @@
       Title="ResultsPage">
 
     <Grid>
-        
+        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Click="BackButton_Click" FontFamily="Wingdings" Content="ß" />
+        <ItemsControl ItemsSource="{Binding Path=Game.Player1.LapTimes, StringFormat='session {0:mm\\:ss\\:fff}'}" Width="180" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 190 0 0" Foreground="White">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}"  />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Page>

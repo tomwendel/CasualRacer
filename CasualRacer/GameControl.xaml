@@ -9,10 +9,6 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
     <Canvas>
-        <TextBlock Text="{Binding Path=Player1.Lap, StringFormat='Lap count: {0}'}" Canvas.Left="200" Canvas.Top="0" />
-        <TextBlock Text="{Binding Path=Player1.LapTime, StringFormat='Current lap: {0:mm\\:ss\\:fff}'}" Canvas.Left="200" Canvas.Top="20" />
-        <TextBlock Text="{Binding Path=Player1.TotalTime, StringFormat='Session: {0:mm\\:ss\\:fff}'}" Canvas.Left="200" Canvas.Top="40" />
-        <ItemsControl ItemsSource="{Binding Path=Player1.LapTimes, StringFormat='session {0:mm\\:ss\\:fff}'}" Width="180" Height="200" />  <!-- stringFormat klappt hier nicht  ;)-->
         <Image Canvas.Left="-10"
                 Canvas.Top="-10"
                 Width="20"

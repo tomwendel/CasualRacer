@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Linq;
 
 namespace CasualRacer.Pages
 {
@@ -23,6 +24,19 @@ namespace CasualRacer.Pages
         public ResultsPage()
         {
             InitializeComponent();
+            DataContext = App.MainModel;
+
+            var entries = App.MainModel.Highscores.Entries.Where(e => e.TrackName.Equals(App.MainModel.SelectedTrack.Name)).OrderBy(e => e.Time);
+            // TODO: Rang ermitteln
+            // TODO: Highscores updaten
+            // TODO: wegspeichern
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.RemoveBackEntry();
+            NavigationService.RemoveBackEntry();
+            NavigationService.GoBack();
         }
     }
 }

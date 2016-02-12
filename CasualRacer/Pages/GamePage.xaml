@@ -12,6 +12,16 @@
     <Grid>
         <Button HorizontalAlignment="Left" VerticalAlignment="Top" Click="BackButton_Click" FontFamily="Wingdings" Content="ß" />
         <CasualRacer:GameControl  Margin="20 50 20 20" />
+        <TextBlock Text="{Binding Path=Player1.Lap, StringFormat='Lap count: {0}'}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 100 0 0" Foreground="White" />
+        <TextBlock Text="{Binding Path=Player1.LapTime, StringFormat='Current lap: {0:mm\\:ss\\:fff}'}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 130 0 0" Foreground="White" />
+        <TextBlock Text="{Binding Path=Player1.TotalTime, StringFormat='Session: {0:mm\\:ss\\:fff}'}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 160 0 0" Foreground="White" />
+        <ItemsControl ItemsSource="{Binding Path=Player1.LapTimes, StringFormat='session {0:mm\\:ss\\:fff}'}" Width="180" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 190 0 0" Foreground="White">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}"  />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
         <Button HorizontalAlignment="Right" VerticalAlignment="Top" Click="ResultsButton_Click" Content="Results" />
     </Grid>
 </Page>
