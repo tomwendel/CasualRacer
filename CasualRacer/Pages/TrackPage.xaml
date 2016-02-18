@@ -33,6 +33,14 @@
 
         <Label Grid.Row="1" Grid.Column="1" Content="{Binding Path=SelectedTrack.Name}" Foreground="White" />
 
+        <ItemsControl Grid.Column="1" Grid.Row="2" ItemsSource="{Binding SelectedHighscores}" Foreground="White">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=RacerName}"  />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        
         <Button Content="Start" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" Click="StartButton_Click" VerticalAlignment="Bottom" Margin="5" />
     </Grid>
 </Page>

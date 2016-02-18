@@ -26,10 +26,26 @@ namespace CasualRacer.Pages
             InitializeComponent();
             DataContext = App.MainModel;
 
-            var entries = App.MainModel.Highscores.Entries.Where(e => e.TrackName.Equals(App.MainModel.SelectedTrack.Name)).OrderBy(e => e.Time);
-            // TODO: Rang ermitteln
-            // TODO: Highscores updaten
-            // TODO: wegspeichern
+            TimeSpan time = App.MainModel.Game.Player1.LapTimes.OrderBy(t => t).FirstOrDefault();
+            if (time != TimeSpan.Zero)
+            {
+                // Neuer Eintrag
+                App.MainModel.Highscores.Entries.Add(new Model.Highscore()
+                {
+                    CreateDate = DateTime.Now,
+                    TrackName = App.MainModel.SelectedTrack.Name,
+                    Time = time,
+                    RacerName = App.MainModel.Settings.RacerName
+                });
+
+                // Entferne alle Einträge größer 10
+                var entries = App.MainModel.Highscores.Entries.Where(e => e.TrackName.Equals(App.MainModel.SelectedTrack.Name)).OrderBy(e => e.Time).Skip(10);
+                foreach (var item in entries.ToArray())
+                    App.MainModel.Highscores.Entries.Remove(item);
+
+                // Speichern
+                App.MainModel.SaveHighscores();
+            }
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

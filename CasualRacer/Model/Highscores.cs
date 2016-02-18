@@ -14,6 +14,8 @@ namespace CasualRacer.Model
     [Serializable]
     public class Highscore
     {
+        public DateTime CreateDate { get; set; }
+
         public string TrackName { get; set; }
 
         public TimeSpan Time { get; set; }

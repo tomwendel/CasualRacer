@@ -9,11 +9,23 @@
       Title="ResultsPage">
 
     <Grid>
-        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Click="BackButton_Click" FontFamily="Wingdings" Content="ß" />
-        <ItemsControl ItemsSource="{Binding Path=Game.Player1.LapTimes, StringFormat='session {0:mm\\:ss\\:fff}'}" Width="180" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 190 0 0" Foreground="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Click="BackButton_Click" FontFamily="Wingdings" Content="ß" Margin="5,5,0,0" />
+        <ItemsControl ItemsSource="{Binding Path=Game.Player1.LapTimes, StringFormat='session {0:mm\\:ss\\:fff}'}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0 50 0 0" Foreground="White" >
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding}"  />
+                    <TextBlock Text="{Binding Path=., StringFormat='lap: {0:mm\\:ss\\:fff}'}"  />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <ItemsControl Grid.Column="1" ItemsSource="{Binding SelectedHighscores}" Foreground="White" Margin="10">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=RacerName}"  />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
