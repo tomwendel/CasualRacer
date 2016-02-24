@@ -4,11 +4,16 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CasualRacer.Pages"
+      xmlns:converter="clr-namespace:CasualRacer.Converters"
       xmlns:CasualRacer="clr-namespace:CasualRacer" x:Class="CasualRacer.Pages.GamePage"
       mc:Ignorable="d" 
       d:DesignHeight="400" d:DesignWidth="600"
       Title="GamePage">
 
+    <Page.Resources>
+        <converter:GameStateToVisibilityConverter x:Key="GameStateToVisibilityConverter" />
+    </Page.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80" />
@@ -29,7 +34,7 @@
 
         <TextBlock Style="{StaticResource Headline}" Grid.Column="1" Text="{Binding Path=Track.Name}" Grid.ColumnSpan="2" Margin="0,8" />
 
-        <Button Click="ResultsButton_Click" Grid.Column="3" Content="Results" />
+        <Button Click="ResultsButton_Click" Grid.Column="3" Content="Results" Visibility="{Binding Path=State, Converter={StaticResource GameStateToVisibilityConverter}}" />
 
         <Grid Grid.Row="1" Grid.ColumnSpan="2" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#4D4D4B66" Margin="10">
             <Grid.RowDefinitions>

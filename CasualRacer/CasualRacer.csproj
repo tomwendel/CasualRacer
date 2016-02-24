@@ -56,6 +56,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\GameStateToVisibilityConverter.cs" />
+    <Compile Include="Converters\ObjectToVisibilityConverter.cs" />
     <Compile Include="Model\Highscores.cs" />
     <Compile Include="Model\Main.cs" />
     <Compile Include="Model\PlayerPositionRelativeToGoal.cs" />

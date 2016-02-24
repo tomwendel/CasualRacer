@@ -10,9 +10,20 @@ namespace CasualRacer.Model
 {
     internal class Main : INotifyPropertyChanged
     {
+        private Game game;
+
         private Track selectedTrack;
 
-        public Game Game { get; private set; }
+        public Game Game
+        {
+            get { return game; }
+            private set
+            {
+                game = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("Game"));
+            }
+        }
 
         public Settings Settings { get; private set; }
 
@@ -20,7 +31,8 @@ namespace CasualRacer.Model
 
 
 
-        public Track SelectedTrack {
+        public Track SelectedTrack
+        {
             get { return selectedTrack; }
             set
             {
