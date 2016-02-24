@@ -7,26 +7,41 @@
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="CreditsPage">
-
-    <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="LightGray">
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label Content="Credits" Grid.Row="0" Grid.ColumnSpan="2" FontSize="20" />
-        <Label Content="Logo / UI" Grid.Row="1" />
-        <Label Content="Cars" Grid.Row="2" />
-        <Label Content="Track" Grid.Row="3" />
-        <Label Content="Aline (http://www.alineimwunderland.de/)" Grid.Row="1" Grid.Column="1" />
-        <Label Content="BAHI (http://opengameart.org/users/bahi)" Grid.Row="2" Grid.Column="1" />
-        <Label Content="TRBRY (http://opengameart.org/users/trbry)" Grid.Row="3" Grid.Column="1" />
-        <Button Grid.Row="4" Grid.Column="2" HorizontalAlignment="Right" FontFamily="Wingdings" Content="ß" Click="Button_Click"  />
+
+        <Button FontFamily="Wingdings" Content="ß" Click="Button_Click" Margin="10" />
+        <TextBlock Style="{StaticResource Headline}" Grid.Column="1" Text="Credits" />
+
+        <Grid Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="LightGray">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Content="Credits" Grid.Row="0" Grid.ColumnSpan="2" FontSize="20" />
+            <Label Content="Logo / UI" Grid.Row="1" />
+            <Label Content="Cars" Grid.Row="2" />
+            <Label Content="Track" Grid.Row="3" />
+            <Label Content="Aline (http://www.alineimwunderland.de/)" Grid.Row="1" Grid.Column="1" />
+            <Label Content="BAHI (http://opengameart.org/users/bahi)" Grid.Row="2" Grid.Column="1" />
+            <Label Content="TRBRY (http://opengameart.org/users/trbry)" Grid.Row="3" Grid.Column="1" />
+            
+        </Grid>
+
     </Grid>
+    
 </Page>

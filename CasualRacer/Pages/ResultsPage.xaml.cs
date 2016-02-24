@@ -33,13 +33,13 @@ namespace CasualRacer.Pages
                 App.MainModel.Highscores.Entries.Add(new Model.Highscore()
                 {
                     CreateDate = DateTime.Now,
-                    TrackName = App.MainModel.SelectedTrack.Name,
+                    TrackName = App.MainModel.SelectedTrack.Key,
                     Time = time,
                     RacerName = App.MainModel.Settings.RacerName
                 });
 
                 // Entferne alle Einträge größer 10
-                var entries = App.MainModel.Highscores.Entries.Where(e => e.TrackName.Equals(App.MainModel.SelectedTrack.Name)).OrderBy(e => e.Time).Skip(10);
+                var entries = App.MainModel.Highscores.Entries.Where(e => e.TrackName.Equals(App.MainModel.SelectedTrack.Key)).OrderBy(e => e.Time).Skip(10);
                 foreach (var item in entries.ToArray())
                     App.MainModel.Highscores.Entries.Remove(item);
 

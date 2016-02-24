@@ -43,7 +43,7 @@ namespace CasualRacer.Model
             get
             {
                 if (selectedTrack != null)
-                    return Highscores.Entries.Where(e => e.TrackName.Equals(SelectedTrack.Name)).OrderBy(e => e.Time);
+                    return Highscores.Entries.Where(e => e.TrackName.Equals(SelectedTrack.Key)).OrderBy(e => e.Time);
                 return null;
             }
         }

@@ -6,22 +6,53 @@
       xmlns:local="clr-namespace:CasualRacer.Pages"
       xmlns:CasualRacer="clr-namespace:CasualRacer" x:Class="CasualRacer.Pages.GamePage"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
+      d:DesignHeight="400" d:DesignWidth="600"
       Title="GamePage">
 
     <Grid>
-        <Button HorizontalAlignment="Left" VerticalAlignment="Top" Click="BackButton_Click" FontFamily="Wingdings" Content="ß" />
-        <CasualRacer:GameControl  Margin="20 50 20 20" />
-        <TextBlock Text="{Binding Path=Player1.Lap, StringFormat='Lap count: {0}'}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 100 0 0" Foreground="White" />
-        <TextBlock Text="{Binding Path=Player1.LapTime, StringFormat='Current lap: {0:mm\\:ss\\:fff}'}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 130 0 0" Foreground="White" />
-        <TextBlock Text="{Binding Path=Player1.TotalTime, StringFormat='Session: {0:mm\\:ss\\:fff}'}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 160 0 0" Foreground="White" />
-        <ItemsControl ItemsSource="{Binding Path=Player1.LapTimes, StringFormat='session {0:mm\\:ss\\:fff}'}" Width="180" Height="200" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0 190 0 0" Foreground="White">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding}"  />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <Button HorizontalAlignment="Right" VerticalAlignment="Top" Click="ResultsButton_Click" Content="Results" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="100" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+
+        <Viewbox Stretch="UniformToFill" Grid.ColumnSpan="3" Grid.RowSpan="2">
+            <CasualRacer:GameControl Width="1200" Height="600" />
+        </Viewbox>
+
+        <Button Click="BackButton_Click" FontFamily="Wingdings" Content="ß" />
+
+        <TextBlock Style="{StaticResource Headline}" Grid.Column="1" Text="{Binding Path=Track.Name}" Grid.ColumnSpan="2" Margin="0,8" />
+
+        <Button Click="ResultsButton_Click" Grid.Column="3" Content="Results" />
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="2" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#4D4D4B66" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="2"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Margin="10 10 10 0" Text="{Binding Path=Player1.Lap, StringFormat='Lap count: {0}'}" Foreground="White" />
+            <TextBlock Grid.Row="1" Margin="10 0 10 0" Text="{Binding Path=Player1.LapTime, StringFormat='Current lap: {0:mm\\:ss\\:fff}'}" Foreground="White" />
+            <TextBlock Grid.Row="2" Margin="10 0 10 10" Text="{Binding Path=Player1.TotalTime, StringFormat='Session: {0:mm\\:ss\\:fff}'}" Foreground="White" />
+            
+            <Border Background="White" Grid.Row="3" Height="1" Margin="10 0" />
+
+            <ItemsControl ItemsSource="{Binding Path=Player1.LapTimes, StringFormat='session {0:mm\\:ss\\:fff}'}" Foreground="White" Grid.Row="4" Margin="10">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding StringFormat=' {0:mm\\:ss\\:fff}'}"  />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+
     </Grid>
 </Page>

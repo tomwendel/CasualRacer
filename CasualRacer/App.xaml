@@ -44,5 +44,13 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="TextBlock" x:Key="Headline">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="40" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style TargetType="Grid" x:Key="Selection">
+            <Setter Property="Background" Value="#4D4D4B44" />
+        </Style>
     </Application.Resources>
 </Application>

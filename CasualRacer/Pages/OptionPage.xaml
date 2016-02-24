@@ -5,12 +5,23 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:CasualRacer.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
+      d:DesignHeight="400" d:DesignWidth="600"
       Title="OptionPage">
 
     <Grid>
-        <Button FontFamily="Wingdings" Content="ß" HorizontalAlignment="Left" VerticalAlignment="Top" Click="Button_Click" Margin="5,5,0,0" />
-        <Grid Height="150" Width="200" Background="Black" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Button FontFamily="Wingdings" Content="ß" Click="Button_Click" Margin="10" />
+        <TextBlock Style="{StaticResource Headline}" Grid.Column="1" Text="Options" />
+        
+        <Grid Height="150" Width="200" Background="Black" Margin="50,25,50,75" Grid.Row="1" Grid.ColumnSpan="2" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*"/>
