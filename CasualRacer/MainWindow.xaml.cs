@@ -85,6 +85,7 @@ namespace CasualRacer
             {
                 App.MainModel.LoadSettings();
                 App.MainModel.LoadTracks();
+                App.MainModel.LoadHighscores();
             });
         }
 

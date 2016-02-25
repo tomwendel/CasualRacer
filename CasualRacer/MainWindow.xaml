@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CasualRacer"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Casual Racer" Height="720" Width="1280" ResizeMode="NoResize">
+        Title="Casual Racer" Height="720" Width="1280" ResizeMode="CanResize" MinWidth="1000" MinHeight="600">
     <Window.Resources>
         <Storyboard x:Key="SlideBackgroundIn">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="image">

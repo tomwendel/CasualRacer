@@ -11,6 +11,7 @@ namespace CasualRacer.Pages
         public GamePage()
         {
             InitializeComponent();
+            DataContext = App.MainModel.Game;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

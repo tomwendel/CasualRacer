@@ -28,15 +28,18 @@ namespace CasualRacer.Model
         /// <param name="width">Die Breite des Tracks.</param>
         /// <param name="height">Die Höhe des Tracks.</param>
         /// <param name="goalPosition">Die Position des Ziels.</param>
-        public Track(string name, int width, int height, Point goalPosition)
+        public Track(string name, string key, int width, int height, Point goalPosition)
         {
             Name = name;
+            Key = key;
             Tiles = new TrackTile[width, height];
 
             this.goalPosition = goalPosition;
         }
 
         public string Name { get; private set; }
+
+        public string Key { get; private set; }
 
         /// <summary>
         /// Ruft die Zellen ab.
@@ -120,9 +123,13 @@ namespace CasualRacer.Model
                 throw new ArgumentNullException(nameof(path));
             }
 
+            FileInfo file = new FileInfo(path);
+            string name = file.Name.Substring(0, file.Name.Length - file.Extension.Length);
+
             using (Stream stream = File.OpenRead(path))
             {
-                return LoadFromTxt(stream, path);
+
+                return LoadFromTxt(stream, name, path);
             }
         }
 
@@ -130,12 +137,14 @@ namespace CasualRacer.Model
         /// Lädt einen Track aus einer .txt-Datei, in der jedes Zeichen den Track-Typ angibt.
         /// </summary>
         /// <param name="stream">Der <see cref="Stream" />, der die Dateiinhalte liefert.</param>
+        /// <param name="name">Name des Tracks</param>
+        /// <param name="key">Eindeutiger Key dieses Tracks</param>
         /// <returns>
         /// Den geladenen Track.
         /// </returns>
         /// <exception cref="ArgumentNullException">Der Stream darf nicht null sein.</exception>
         /// <exception cref="FormatException">Die Datei ist leer.</exception>
-        public static Track LoadFromTxt(Stream stream, string name)
+        public static Track LoadFromTxt(Stream stream, string name, string key)
         {
             if (stream == null)
             {
@@ -186,7 +195,7 @@ namespace CasualRacer.Model
                     throw new Exception("The file does not contains any goal.");
                 }
 
-                return BuildTrack(name, tilesPerLine, allTiles, goalPos.Value);
+                return BuildTrack(name, key, tilesPerLine, allTiles, goalPos.Value);
             }
         }
 
@@ -239,11 +248,11 @@ namespace CasualRacer.Model
         /// <param name="allTiles">Die Liste aller Tiles.</param>
         /// <param name="goal">Die Position des Ziels.</param>
         /// <returns>Ein <see cref="Track"/> Objekt zusammengesetzt aus den Tiles.</returns>
-        private static Track BuildTrack(string name, int tilesPerLine, IEnumerable<TrackTile[]> allTiles, Point goal)
+        private static Track BuildTrack(string name, string key, int tilesPerLine, IEnumerable<TrackTile[]> allTiles, Point goal)
         {
             int y = 0;
 
-            var track = new Track(name, tilesPerLine, allTiles.Count(), goal);
+            var track = new Track(name, key, tilesPerLine, allTiles.Count(), goal);
 
             foreach (var tileRow in allTiles)
             {

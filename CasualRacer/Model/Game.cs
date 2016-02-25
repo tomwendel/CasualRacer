@@ -1,10 +1,13 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 
 namespace CasualRacer.Model
 {
-    internal class Game
+    internal class Game : INotifyPropertyChanged
     {
+        private GameState state;
+
         /// <summary>
         /// Ruft den <see cref="Track"/> ab.
         /// </summary>
@@ -13,7 +16,16 @@ namespace CasualRacer.Model
         /// <summary>
         /// Gibt den aktuellen <see cref="GameState"/> zurück.
         /// </summary>
-        public GameState State { get; private set; }
+        public GameState State
+        {
+            get { return state; }
+            private set
+            {
+                state = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("State"));
+            }
+        }
 
         public TimeSpan CountDown { get; private set; }
 
@@ -63,10 +75,14 @@ namespace CasualRacer.Model
                     break;
             }
 
-            Player1 = new Player() {
+            Player1 = new Player()
+            {
                 Position = (Point)((goal + startOffset1) * Track.CELLSIZE),
-                Direction = startRotation };
+                Direction = startRotation
+            };
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Aktualisiert den Spielstatus.
@@ -135,7 +151,7 @@ namespace CasualRacer.Model
             // Positionsveränderung
             var direction = (float)(player.Direction * Math.PI) / 180f;
             var velocity = new Vector(
-                Math.Sin(direction) * player.Velocity * elapsedTime.TotalSeconds, 
+                Math.Sin(direction) * player.Velocity * elapsedTime.TotalSeconds,
                 -Math.Cos(direction) * player.Velocity * elapsedTime.TotalSeconds);
             player.Position += velocity;
 
