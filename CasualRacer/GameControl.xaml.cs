@@ -426,8 +426,8 @@ namespace CasualRacer
             {
                 case Key.Up: game.Player1.Acceleration = false; break;
                 case Key.Down: game.Player1.Break = false; break;
-                case Key.Left: game.Player1.WheelLeft = false; break;
-                case Key.Right: game.Player1.WheelRight = false; break;
+                case Key.Left: game.Player1.SteerLeft = false; break;
+                case Key.Right: game.Player1.SteerRight = false; break;
             }
         }
 
@@ -437,8 +437,8 @@ namespace CasualRacer
             {
                 case Key.Up: game.Player1.Acceleration = true; break;
                 case Key.Down: game.Player1.Break = true; break;
-                case Key.Left: game.Player1.WheelLeft = true; break;
-                case Key.Right: game.Player1.WheelRight = true; break;
+                case Key.Left: game.Player1.SteerLeft = true; break;
+                case Key.Right: game.Player1.SteerRight = true; break;
             }
         }
 

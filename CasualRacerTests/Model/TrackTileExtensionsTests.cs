@@ -20,18 +20,11 @@ namespace CasualRacer.Model.Tests {
             var myTile = new TrackTile();
             myTile = TrackTile.GoalLeft;
 
-
-
             //Act 
 
 
             bool result = myTile.IsGoalTile();
-
-
-
-
-
-
+            
             //Assert 
             
             Assert.AreEqual(true, result);

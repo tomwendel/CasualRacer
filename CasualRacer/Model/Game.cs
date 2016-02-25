@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 
 namespace CasualRacer.Model
@@ -7,6 +8,8 @@ namespace CasualRacer.Model
     internal class Game : INotifyPropertyChanged
     {
         private GameState state;
+        const int MAXLAPCOUNT=45; //TODO: mehr Runden zum debuggen
+        const float MAXSTEERANGLE=110;
 
         /// <summary>
         /// Ruft den <see cref="Track"/> ab.
@@ -103,7 +106,7 @@ namespace CasualRacer.Model
                     break;
                 case GameState.Race:
                     UpdatePlayer(totalTime, elapsedTime, Player1);
-                    if (Player1.Lap == 5)
+                    if (Player1.Lap == MAXLAPCOUNT)
                         State = GameState.Finished;
                     break;
             }
@@ -121,10 +124,10 @@ namespace CasualRacer.Model
             player.LapTime += elapsedTime;
 
             // Lenkung
-            if (player.WheelLeft)
-                player.Direction -= (float)elapsedTime.TotalSeconds * 100;
-            if (player.WheelRight)
-                player.Direction += (float)elapsedTime.TotalSeconds * 100;
+            if (player.SteerLeft)
+                player.Direction -= (float)elapsedTime.TotalSeconds * MAXSTEERANGLE;
+            if (player.SteerRight)
+                player.Direction += (float)elapsedTime.TotalSeconds * MAXSTEERANGLE;
 
             // Beschleunigung & Bremse
             var targetSpeed = 0f;
@@ -157,9 +160,9 @@ namespace CasualRacer.Model
 
             // Goal State ermitteln
             var playerCell = Track.GetTileByPosition((Point)player.Position);
-            if (((int)playerCell & 0xC) > 0)
+            if (playerCell.IsGoalTile())
             {
-                // Player stelt in einer Goal-Zelle
+                Debug.Write("goal tile: ");
                 switch (playerCell)
                 {
                     case TrackTile.GoalDown:
@@ -172,12 +175,13 @@ namespace CasualRacer.Model
                         player.PositionRelativeToGoal = (player.Position.X % Track.CELLSIZE < Track.CELLSIZE / 2) ? PlayerPositionRelativeToGoal.BeforeGoal : PlayerPositionRelativeToGoal.AfterGoal;
                         break;
                     case TrackTile.GoalUp:
+                        Debug.WriteLine(player.Position.Y);
                         player.PositionRelativeToGoal = (player.Position.Y % Track.CELLSIZE >= Track.CELLSIZE / 2) ? PlayerPositionRelativeToGoal.BeforeGoal : PlayerPositionRelativeToGoal.AfterGoal;
                         break;
                 }
             }
-            else
-            {
+            else {
+                
                 player.PositionRelativeToGoal = PlayerPositionRelativeToGoal.AwayFromGoal;
             }
         }
