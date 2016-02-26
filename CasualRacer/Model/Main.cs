@@ -20,8 +20,8 @@ namespace CasualRacer.Model
             private set
             {
                 game = value;
-                if (PropertyChanged != null)                                          //TODO nameof()
-                    PropertyChanged(this, new PropertyChangedEventArgs("Game"));
+                if (PropertyChanged != null)                                       
+                    PropertyChanged(this, new PropertyChangedEventArgs(nameof(Game)));
             }
         }
 
@@ -41,8 +41,8 @@ namespace CasualRacer.Model
                     selectedTrack = value;
                     if (PropertyChanged != null)
                     {
-                        PropertyChanged(this, new PropertyChangedEventArgs("SelectedTrack"));       //TODO nameof()
-                        PropertyChanged(this, new PropertyChangedEventArgs("SelectedHighscores"));
+                        PropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectedTrack)));  
+                        PropertyChanged(this, new PropertyChangedEventArgs(nameof(SelectedHighscores)));
                     }
                 }
             }

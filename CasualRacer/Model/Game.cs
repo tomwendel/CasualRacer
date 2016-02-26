@@ -8,7 +8,7 @@ namespace CasualRacer.Model
     internal class Game : INotifyPropertyChanged
     {
         private GameState state;
-        const int MAXLAPCOUNT=45; //TODO: mehr Runden zum debuggen
+        const int MAXLAPCOUNT=45; //TODO: mehr Runden zum debuggen  / in die Optionen packen und anpaßbar machen
         const float MAXSTEERANGLE=110;
 
         /// <summary>
@@ -160,9 +160,10 @@ namespace CasualRacer.Model
 
             // Goal State ermitteln
             var playerCell = Track.GetTileByPosition((Point)player.Position);
+            
             if (playerCell.IsGoalTile())
             {
-                Debug.Write("goal tile: ");
+                Debug.Write("goal tile: "+playerCell);
                 switch (playerCell)
                 {
                     case TrackTile.GoalDown:
