@@ -3,6 +3,7 @@
     using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Diagnostics;
     using System.Windows;
 
     /// <summary>
@@ -102,6 +103,7 @@
                 if (lap != value)
                 {
                     lap = value;
+                    Debug.WriteLine("lap");
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Lap)));
                 }
             }
@@ -114,7 +116,8 @@
             {
                 if (goalFlag != value)
                 {
-                    if (goalFlag == PlayerPositionRelativeToGoal.BeforeGoal && value == PlayerPositionRelativeToGoal.AfterGoal)
+                    Debug.WriteLine($"Position changed from {goalFlag} to {value}");
+                    if (goalFlag == PlayerPositionRelativeToGoal.BeforeGoal & value == PlayerPositionRelativeToGoal.AfterGoal) //&& könnte der Lap-Bug sein
                     {
                         // Nächste Runde
                         if (Lap++ == measuredLap)
@@ -124,7 +127,7 @@
                             measuredLap++;
                         }
                     }
-                    else if (goalFlag == PlayerPositionRelativeToGoal.AfterGoal && value == PlayerPositionRelativeToGoal.BeforeGoal)
+                    else if (goalFlag == PlayerPositionRelativeToGoal.AfterGoal & value == PlayerPositionRelativeToGoal.BeforeGoal)
                     {
                         // Runde zurück
                         Lap--;
@@ -176,11 +179,11 @@
         /// <summary>
         /// Ruft ab, ob der Spieler nach links lenkt.
         /// </summary>
-        public bool WheelLeft { get; set; }
+        public bool SteerLeft { get; set; }
 
         /// <summary>
         /// Ruft ab, ob der Spieler nach rechts lenkt.
         /// </summary>
-        public bool WheelRight { get; set; }
+        public bool SteerRight { get; set; }
     }
 }
